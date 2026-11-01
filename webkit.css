@@ -1,0 +1,286 @@
+/* Steam Glass: store and community pages (loaded through "Steam-WebKit").
+   Built on the legacy v6 classes, which stay stable across web deploys.
+   Game art and profile backgrounds are left alone; the chrome around them becomes the sheet. */
+@import url("shared/tokens.css");
+
+:root {
+  --color-accent-9: var(--gs-fg) !important;
+  --color-accent-10: var(--gs-fg) !important;
+  --color-accent-contrast: var(--gs-bg) !important;
+}
+
+html,
+body,
+body.v6,
+.responsive_page_frame,
+.responsive_page_content,
+.responsive_page_template_content,
+.page_content_ctn,
+.home_page_body_ctn,
+.game_page_background {
+  background-color: var(--gs-bg) !important;
+  background-image: none !important;
+  color: var(--gs-fg);
+}
+body,
+body.v6,
+.responsive_page_template_content {
+  font-family: var(--gs-font) !important;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--gs-fg); color: var(--gs-bg); }
+::-webkit-scrollbar { width: 10px; height: 10px; background: var(--gs-bg); }
+::-webkit-scrollbar-thumb { background: var(--gs-faint); border: 2px solid var(--gs-bg); border-radius: 10px; }
+
+a { transition: color 0.25s var(--gs-ease); }
+
+/* ================= Headers and nav ================= */
+#global_header,
+#store_header,
+.store_nav_bg {
+  background: var(--gs-bg) !important;
+  border-bottom: 1px solid var(--gs-line) !important;
+  box-shadow: none !important;
+}
+#global_header .menuitem,
+.store_nav .tab,
+.store_nav .tab > span {
+  color: var(--gs-mute) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 600 !important;
+  background: transparent !important;
+  border-radius: var(--gs-pill) !important;
+}
+#global_header .menuitem:hover,
+#global_header .menuitem.active,
+.store_nav .tab:hover,
+.store_nav .tab:hover > span { color: var(--gs-fg) !important; }
+#global_header .menuitem.active { background: var(--gs-prism) bottom / 100% 3px no-repeat !important; }
+#store_nav_search_term,
+.store_nav .searchbox {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--gs-fg) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: var(--gs-fg) !important;
+}
+
+/* ================= Section headings: the dashboard's label + heavy title ================= */
+.home_page_content h2,
+.home_section_title,
+.home_tabs_row .tab_content,
+.page_content h2,
+.leftcol h2,
+.rightcol h2,
+.game_area_description h2 {
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  background: none !important;
+  border-bottom: 1.5px solid var(--gs-fg) !important;
+  padding-bottom: 8px !important;
+}
+.apphub_AppName,
+.pageheader,
+.persona_name .actual_persona_name {
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.035em !important;
+  line-height: 0.95 !important;
+}
+
+/* ================= Buttons: pills ================= */
+.btn_green_steamui,
+.btn_blue_steamui,
+.btn_grey_steamui,
+.btnv6_green_white_innerfade,
+.btnv6_blue_hoverfade,
+.btnv6_blue_blue_innerfade,
+.btnv6_lightblue_blue,
+.btnv6_white_transparent {
+  background: transparent !important;
+  border: 1px solid var(--gs-fg) !important;
+  border-radius: var(--gs-pill) !important;
+  box-shadow: none !important;
+  color: var(--gs-fg) !important;
+  text-shadow: none !important;
+  transition: background 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
+}
+:is(.btn_green_steamui, .btn_blue_steamui, .btn_grey_steamui, .btnv6_green_white_innerfade, .btnv6_blue_hoverfade,
+    .btnv6_blue_blue_innerfade, .btnv6_lightblue_blue, .btnv6_white_transparent) > span {
+  background: transparent !important;
+  border-radius: var(--gs-pill) !important;
+  color: inherit !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+:is(.btn_blue_steamui, .btn_grey_steamui, .btnv6_blue_hoverfade, .btnv6_blue_blue_innerfade,
+    .btnv6_lightblue_blue, .btnv6_white_transparent):hover {
+  background: var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+}
+/* Buy / add to cart / play: the solid ink pill with the prism edge */
+.btn_green_steamui,
+.btnv6_green_white_innerfade,
+.btn_addtocart .btn_green_steamui {
+  background: var(--gs-prism) bottom / 100% 3px no-repeat, var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+}
+:is(.btn_green_steamui, .btnv6_green_white_innerfade):hover { filter: brightness(1.08); }
+
+/* ================= Capsules and lists ================= */
+.store_capsule,
+.store_main_capsule,
+.tab_item,
+.home_area_spotlight,
+.carousel_container .store_capsule {
+  background: transparent !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+.tab_item {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-bottom: 1px solid var(--gs-line) !important;
+  border-radius: 0 !important;
+}
+.tab_item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gs-fg);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.5s var(--gs-ease);
+}
+.tab_item:hover::before { transform: scaleY(1); }
+.tab_item:hover,
+.tab_item:hover * { color: var(--gs-bg) !important; }
+.tab_item_name { color: var(--gs-fg) !important; font-weight: 600 !important; }
+
+/* Search results: the dashboard's ruled list with the ink wipe */
+#search_resultsRows { border-top: 1.5px solid var(--gs-fg); }
+.search_result_row {
+  position: relative;
+  isolation: isolate;
+  background: transparent !important;
+  border-bottom: 1px solid var(--gs-line) !important;
+  border-radius: 0 !important;
+}
+.search_result_row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gs-fg);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.5s var(--gs-ease);
+}
+.search_result_row:hover::before { transform: scaleY(1); }
+.search_result_row:hover,
+.search_result_row:hover * { color: var(--gs-bg) !important; }
+.search_name .title { color: var(--gs-fg) !important; font-weight: 600 !important; }
+.search_released,
+.search_reviewscore { color: var(--gs-mute) !important; font-variant-numeric: tabular-nums; }
+
+/* ================= Prices ================= */
+.discount_block,
+.game_purchase_action_bg,
+.discount_prices {
+  background: transparent !important;
+  border-radius: var(--gs-pill) !important;
+}
+.discount_pct {
+  background: var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+  border-radius: var(--gs-pill) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 900 !important;
+  font-variant-numeric: tabular-nums;
+}
+.discount_original_price { color: var(--gs-mute) !important; font-variant-numeric: tabular-nums; }
+.discount_final_price,
+.game_purchase_price {
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.02em !important;
+  font-variant-numeric: tabular-nums;
+}
+.game_review_summary.positive { color: var(--gs-ok) !important; }
+.game_review_summary.mixed { color: var(--gs-warn) !important; }
+.game_review_summary.negative { color: var(--gs-err) !important; }
+
+/* ================= Game page ================= */
+.game_background_glow { background: none !important; }
+.game_area_purchase_game {
+  background: transparent !important;
+  border-top: 1.5px solid var(--gs-fg) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.game_area_purchase_game h1 {
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.03em !important;
+}
+.glance_ctn,
+.rightcol .block,
+.block_content {
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+.rightcol .block { border-top: 1px solid var(--gs-line) !important; }
+.app_tag {
+  background: transparent !important;
+  border: 1px solid var(--gs-line) !important;
+  border-radius: var(--gs-pill) !important;
+  color: var(--gs-fg) !important;
+  box-shadow: none !important;
+}
+.app_tag:hover { border-color: var(--gs-fg) !important; }
+
+/* ================= Menus and modals ================= */
+.popup_menu,
+.popup_block_new .popup_body {
+  background: var(--gs-raise) !important;
+  border: 1px solid var(--gs-line) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45) !important;
+}
+.popup_menu_item,
+.popup_menu .popup_menu_item { color: var(--gs-fg) !important; }
+.popup_menu_item:hover { background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+.newmodal {
+  background: var(--gs-bg) !important;
+  border: 1px solid var(--gs-line) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.55) !important;
+}
+.newmodal_header {
+  background: transparent !important;
+  color: var(--gs-fg) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+}
+.newmodal_content { background: transparent !important; color: var(--gs-fg) !important; }
+
+/* ================= Footer ================= */
+#footer,
+#footer_spacer {
+  background: var(--gs-bg) !important;
+  border-top: 1px solid var(--gs-line) !important;
+  color: var(--gs-mute) !important;
+}

@@ -1,0 +1,29 @@
+/* Steam Glass: tokens shared by every surface.
+   Colours come from modes/ink.css or modes/paper.css; this file holds the rest. */
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;900&display=swap");
+
+/* Ink fallback at zero specificity, so the mode files always win whatever order they load in. */
+:where(:root) {
+  --gs-bg: #111;
+  --gs-rail: #181818;
+  --gs-raise: #1e1e1e;
+  --gs-fg: #e9e9e7;
+  --gs-mute: rgba(233, 233, 231, 0.62);
+  --gs-faint: rgba(233, 233, 231, 0.28);
+  --gs-line: rgba(233, 233, 231, 0.16);
+  --gs-err: #ef7a62;
+  --gs-warn: #e0a43a;
+  --gs-info: #6aa8ff;
+  --gs-ok: #6fd39a;
+  --gs-glass: rgba(17, 17, 17, 0.88);
+}
+
+:root {
+  --gs-prism: linear-gradient(90deg, #ff3b3b, #ffb000, #2fd27a, #1e90ff, #a24bff);
+  --gs-ease: cubic-bezier(0.7, 0, 0.2, 1);
+  --gs-font: "Inter Tight", "Motiva Sans", system-ui, sans-serif;
+  --gs-pill: 999px;
+}
+
+/* Small-caps label: 12px, 500, letter-spaced uppercase, muted. */
+/* Display: 900, uppercase, tight negative tracking. */

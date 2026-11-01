@@ -1,0 +1,30 @@
+/* Paper: the dashboard's light sheet. Ink text on warm grey paper. */
+:root {
+  --gs-bg: #e9e9e7;
+  --gs-rail: #f3f3f1;
+  --gs-raise: #fafaf8;
+  --gs-fg: #111;
+  --gs-mute: rgba(17, 17, 17, 0.62);
+  --gs-faint: rgba(17, 17, 17, 0.3);
+  --gs-line: rgba(17, 17, 17, 0.14);
+  --gs-err: #b3261e;
+  --gs-warn: #8a5a00;
+  --gs-info: #1f5fbf;
+  --gs-ok: #1d7a46;
+  --gs-glass: rgba(233, 233, 231, 0.88);
+  color-scheme: light;
+}
+
+/* Steam hard-codes light text and dark panels all over the client and store.
+   On paper those go flat: panels turn transparent and text inherits ink.
+   Images keep their art (background-image is untouched), and every rule in the theme
+   that sets its own colour is more specific than this, so wipes and pills still invert. */
+body {
+  background-color: var(--gs-bg) !important;
+  color: var(--gs-fg) !important;
+}
+body *:not(img, video, canvas, svg *) {
+  background-color: transparent !important;
+  color: inherit !important;
+  text-shadow: none !important;
+}

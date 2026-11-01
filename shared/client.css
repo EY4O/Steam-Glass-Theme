@@ -1,0 +1,232 @@
+/* Steam Glass: controls every client window shares.
+   Buttons, inputs, dropdowns, context menus, modals, settings, scrollbars.
+   Steam measures popup windows before the theme lands, so this file paints
+   and rounds things but leaves their sizes alone. */
+
+/* Steam's 2026 design-system accent goes monochrome: ink on paper, paper on ink.
+   !important because Steam picks the palette with :root:has(.Root > div[data-accent-color]). */
+:root {
+  --color-accent-9: var(--gs-fg) !important;
+  --color-accent-10: var(--gs-fg) !important;
+  --color-accent-11: var(--gs-fg) !important;
+  --color-accent-contrast: var(--gs-bg) !important;
+  --color-progress-bar-foreground: var(--gs-fg) !important;
+  --font-family: var(--gs-font) !important;
+}
+
+body {
+  font-family: var(--gs-font) !important;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--gs-fg); color: var(--gs-bg); }
+
+/* ================= Scrollbars ================= */
+::-webkit-scrollbar { width: 10px !important; height: 10px !important; background: transparent !important; }
+::-webkit-scrollbar-track { background: transparent !important; }
+::-webkit-scrollbar-thumb {
+  background: var(--gs-faint) !important; border: 2px solid transparent !important;
+  border-radius: 10px !important; background-clip: padding-box !important;
+}
+::-webkit-scrollbar-thumb:hover { background-color: var(--gs-mute) !important; }
+::-webkit-scrollbar-corner,
+::-webkit-scrollbar-button { display: none !important; background: transparent !important; }
+
+/* ================= Buttons: hairline pills, ink on hover ================= */
+html button.DialogButton,
+html .DialogButton {
+  border: 1px solid var(--gs-fg) !important;
+  border-radius: var(--gs-pill) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  transition: background 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
+}
+html button.DialogButton:not(.Disabled, :disabled):is(:hover, .gpfocus),
+html .DialogButton:not(.Disabled, :disabled):is(:hover, .gpfocus),
+html button.DialogButton.Primary,
+html .DialogButton.Primary {
+  background: var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+}
+html button.DialogButton.Primary:not(.Disabled, :disabled):is(:hover, .gpfocus) {
+  background: var(--gs-prism) bottom / 100% 3px no-repeat, var(--gs-fg) !important;
+}
+html .DialogButton:is(.Disabled, :disabled) { opacity: 0.4 !important; cursor: default !important; }
+html .DialogButton::before,
+html .DialogButton::after { display: none !important; }
+
+/* Steam's new design-system Button */
+html .Button:is(.Variant-basic, .Variant-vibrant, .Variant-outline, .Variant-ghost, .Variant-dark) {
+  border-radius: var(--gs-pill) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+html .Button.Variant-vibrant { background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+html .Button:is(.Variant-basic, .Variant-outline, .Variant-dark) {
+  background: transparent !important; color: var(--gs-fg) !important; border: 1px solid var(--gs-line) !important;
+}
+html .Button:is(.Variant-basic, .Variant-outline, .Variant-dark, .Variant-ghost):hover {
+  background: var(--gs-fg) !important; color: var(--gs-bg) !important; border-color: var(--gs-fg) !important;
+}
+
+:focus-visible { outline: 2px solid var(--gs-fg) !important; outline-offset: 2px !important; }
+
+/* ================= Inputs: the dashboard's underline field ================= */
+html .DialogInput,
+html .DialogTextInputBase,
+html input.DialogInput {
+  border: 0 !important;
+  border-bottom: 1px solid var(--gs-fg) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 500 !important;
+  caret-color: #1e90ff;
+}
+html .DialogInput:focus,
+html .DialogTextInputBase:focus { border-bottom-width: 2px !important; }
+html .DialogInput::placeholder,
+html .DialogTextInputBase::placeholder { color: var(--gs-mute) !important; }
+html .DialogLabel {
+  color: var(--gs-mute) !important; font-size: 12px !important; font-weight: 500 !important;
+  letter-spacing: 0.06em !important; text-transform: uppercase !important;
+}
+
+/* Dropdowns: pill trigger, hairline list */
+html .DialogDropDown {
+  border: 1px solid var(--gs-line) !important;
+  border-radius: var(--gs-pill) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--gs-fg) !important;
+  transition: border-color 0.25s var(--gs-ease) !important;
+}
+html .DialogDropDown:hover { border-color: var(--gs-fg) !important; }
+html .DialogDropDown_Arrow { color: var(--gs-mute) !important; fill: currentColor !important; }
+html .DialogDropDownMenu {
+  background: var(--gs-raise) !important;
+  border: 1px solid var(--gs-line) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45) !important;
+}
+html .DialogDropDownMenu_Item { color: var(--gs-fg) !important; border-radius: 0 !important; }
+html .DialogDropDownMenu_Item:hover,
+html .DialogDropDownMenu_Item.gpfocus { background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+html .DialogDropDownMenu_Separator { background: var(--gs-line) !important; }
+
+/* Checkboxes and toggles */
+html .DialogCheckbox {
+  border: 1px solid var(--gs-fg) !important; border-radius: 4px !important;
+  background: transparent !important; box-shadow: none !important;
+}
+html .Toggle .ToggleRail {
+  background: transparent !important; border: 1px solid var(--gs-faint) !important; border-radius: var(--gs-pill) !important;
+}
+html .Toggle .ToggleSwitch { background: var(--gs-mute) !important; box-shadow: none !important; }
+html .Toggle.On .ToggleRail { background: var(--gs-fg) !important; border-color: var(--gs-fg) !important; }
+html .Toggle.On .ToggleSwitch { background: var(--gs-bg) !important; }
+
+/* Sliders: a hairline with a prism-tipped handle */
+html .SliderControl .SliderTrack { background: var(--gs-line) !important; height: 2px !important; border-radius: 1px !important; }
+html .SliderControl .SliderHandle {
+  background: var(--gs-fg) !important; border: 2px solid var(--gs-bg) !important; box-shadow: 0 0 0 1px var(--gs-fg) !important;
+}
+
+/* ================= Context and popup menus ================= */
+html .contextMenu,
+html .ContextMenuPopup,
+html .MenuPopup,
+html .NotificationsMenu {
+  background: var(--gs-raise) !important;
+  border: 1px solid var(--gs-line) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+html .contextMenuContents { background: transparent !important; }
+html .contextMenuItem,
+html .MenuPopup .MenuItem {
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 500 !important;
+  border-radius: 0 !important;
+  transition: background 0.2s var(--gs-ease), color 0.2s var(--gs-ease) !important;
+}
+html .contextMenuItem:is(.active, :hover),
+html .MenuPopup .MenuItem:hover {
+  background: var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+}
+html .contextMenuItem.Destructive { color: var(--gs-err) !important; }
+html .contextMenuItem.Destructive:is(.active, :hover) { background: var(--gs-err) !important; color: var(--gs-bg) !important; }
+html .ContextMenuSeparator { background: var(--gs-line) !important; height: 1px !important; }
+
+/* ================= Modals and dialogs ================= */
+html .ModalOverlayBackground { background: rgba(0, 0, 0, 0.5) !important; }
+html .ModalPosition_Content,
+html .DialogContent,
+html .PopupFullWindow {
+  background: var(--gs-bg) !important;
+  color: var(--gs-fg) !important;
+  border: 1px solid var(--gs-line) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.55) !important;
+}
+html .PopupFullWindow { border-radius: 0 !important; border: 0 !important; box-shadow: none !important; }
+html .ModalPosition_TopBar { background: transparent !important; }
+html .DialogHeader {
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.02em !important;
+}
+html .DialogBodyText { color: var(--gs-mute) !important; }
+html .DialogFooter { border-top: 1px solid var(--gs-line) !important; }
+
+/* ================= Settings window ================= */
+html .PagedSettingsDialog_PageListColumn {
+  background: var(--gs-rail) !important;
+  border-right: 1px solid var(--gs-line) !important;
+}
+html .PagedSettingDialog_ContentColumn { background: var(--gs-bg) !important; }
+html .PagedSettingsDialog_PageListItem {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--gs-fg) !important;
+  font-weight: 600 !important;
+}
+html .PagedSettingsDialog_PageListItem::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; background: var(--gs-fg);
+  transform: scaleY(0); transform-origin: bottom; transition: transform 0.45s var(--gs-ease);
+}
+html .PagedSettingsDialog_PageListItem:is(:hover, .Active)::before { transform: scaleY(1); }
+html .PagedSettingsDialog_PageListItem:is(:hover, .Active),
+html .PagedSettingsDialog_PageListItem:is(:hover, .Active) * { color: var(--gs-bg) !important; fill: var(--gs-bg) !important; }
+html .SettingsDialogSubHeader {
+  color: var(--gs-fg) !important;
+  font-size: 12px !important; font-weight: 500 !important;
+  letter-spacing: 0.06em !important; text-transform: uppercase !important;
+  border-bottom: 1.5px solid var(--gs-fg) !important;
+  padding-bottom: 8px !important;
+}
+html .Field { border-bottom: 1px solid var(--gs-line) !important; background: transparent !important; }
+html .Field .FieldLabel { color: var(--gs-fg) !important; font-weight: 600 !important; }
+html .FieldDescription { color: var(--gs-mute) !important; }
+
+/* ================= Window controls ================= */
+html .title-area-icon-inner,
+html .windowControlButton { border-radius: var(--gs-pill) !important; transition: background 0.2s var(--gs-ease) !important; }
+html .windowControlButton:hover .title-area-icon-inner { background: var(--gs-line) !important; }
+html .closeButton:hover .title-area-icon-inner { background: var(--gs-err) !important; color: var(--gs-bg) !important; }

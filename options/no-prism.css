@@ -1,0 +1,4 @@
+/* Prism accent off: every prism use falls back to plain ink. */
+html:root {
+  --gs-prism: linear-gradient(90deg, var(--gs-fg), var(--gs-fg));
+}

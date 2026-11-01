@@ -1,0 +1,476 @@
+/* Steam Glass: main window (library, title bar, nav) plus menus, modals and toasts.
+   Millennium loads this through its default patches for ^Steam$, Menu$, Supernav$,
+   .ModalDialogPopup and friends. */
+@import url("shared/tokens.css");
+@import url("shared/client.css");
+
+/* ================= The sheet ================= */
+/* Steam paints most panels opaque; they step aside so one sheet colour shows through. */
+body.DesktopUI,
+#popup_target,
+.FocusNavigationRoot,
+.OuterFrame,
+.ContentFrame,
+.ForceOpaqueBackground,
+.LocalContentContainer,
+.MainPanel,
+.AppDetailsTransitionGroup,
+.AppDetailsMain,
+.AppDetailsMain > .Container,
+.AppDetailsMain .Body.InnerContainer,
+.AppDetailsOverviewPanel,
+.AppDetailsSection,
+.AppDetailsSectionContainer,
+.ActivityFeedContainer .Panel,
+.LibraryHome,
+.ShowcaseOuter,
+.Showcase,
+.URLBarReplacement {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+body.DesktopUI {
+  background: var(--gs-bg) !important;
+  color: var(--gs-fg) !important;
+}
+.StickyHeaderShadow { display: none !important; }
+
+/* ================= Title bar and menu bar ================= */
+.TopBar,
+.TitleBar {
+  background: var(--gs-bg) !important;
+}
+.TitleBar { border-bottom: 1px solid var(--gs-line) !important; }
+.RootMenuButton > div {
+  color: var(--gs-mute) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 500 !important;
+  transition: color 0.25s var(--gs-ease) !important;
+}
+.RootMenuButton:hover > div { color: var(--gs-fg) !important; }
+.FocusBar { display: none !important; }
+
+/* Account, wallet, bell: quiet pills */
+.TitleBarControls .Button,
+.AccountMenu,
+.WalletBalance {
+  border-radius: var(--gs-pill) !important;
+  transition: background 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
+}
+.TitleBarControls .Button:hover,
+.AccountMenu:hover { background: var(--gs-line) !important; }
+.WalletBalance {
+  border: 1px solid var(--gs-line) !important;
+  background: transparent !important;
+  color: var(--gs-fg) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ================= STORE / LIBRARY / COMMUNITY ================= */
+/* Heavy uppercase labels, a hairline pill on hover, the prism under the open one. */
+.SuperNavBar {
+  background: var(--gs-bg) !important;
+  border-bottom: 1px solid var(--gs-line) !important;
+}
+.SuperNavMenu .MenuButton {
+  position: relative;
+  border: 1px solid transparent !important;
+  border-radius: var(--gs-pill) !important;
+  color: var(--gs-mute) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: uppercase !important;
+  transition: color 0.25s var(--gs-ease), border-color 0.25s var(--gs-ease) !important;
+}
+.SuperNavMenu:hover .MenuButton { color: var(--gs-fg) !important; border-color: var(--gs-line) !important; }
+.SuperNavMenu.Selected .MenuButton { color: var(--gs-fg) !important; border-bottom: 1px solid transparent !important; }
+.SuperNavMenu.Selected .MenuButton::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 14px !important; right: 14px !important; bottom: -1px !important;
+  height: 3px !important;
+  background: var(--gs-prism) !important;
+  border: 0 !important;
+  display: block !important;
+}
+.SuperNav .Arrow { color: var(--gs-mute) !important; transition: color 0.25s var(--gs-ease) !important; }
+.SuperNav .Arrow:hover { color: var(--gs-fg) !important; }
+
+/* URL bar on web pages: a hairline strip with mono-weight text */
+.ContentFrame .URLBar {
+  background: var(--gs-bg) !important;
+  border-bottom: 1px solid var(--gs-line) !important;
+}
+.URLBarText { color: var(--gs-mute) !important; font-family: var(--gs-font) !important; font-weight: 500 !important; }
+
+/* ================= Library rail ================= */
+.LeftListSizableContainer {
+  background: var(--gs-rail) !important;
+  border-right: 1px solid var(--gs-line) !important;
+}
+.LeftListSizableContainer .Container,
+.GameListHomeAndSearch { background: transparent !important; }
+.LibraryWindowDivider { background: transparent !important; }
+
+/* HOME row: the dashboard's black OVERVIEW bar */
+.HomeBox .Bar {
+  border-radius: 0 !important;
+  color: var(--gs-fg) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+}
+.HomeBox .Bar.Selected {
+  background: var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+}
+.HomeBox .Bar.Selected * { color: var(--gs-bg) !important; fill: var(--gs-bg) !important; }
+
+/* Search: the underline field with a key-cap feel */
+.GameListHomeAndSearch .SearchInput .DialogInput,
+.GameListHomeAndSearch .SearchInput input {
+  border: 0 !important;
+  border-bottom: 1px solid var(--gs-fg) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--gs-fg) !important;
+  font: 500 15px var(--gs-font) !important;
+}
+.GameListHomeAndSearch .SearchInput input:focus { border-bottom-width: 2px !important; }
+.AdvancedSearchButton,
+.CollectionsButton {
+  border: 1px solid var(--gs-line) !important;
+  border-radius: var(--gs-pill) !important;
+  background: transparent !important;
+  color: var(--gs-mute) !important;
+  transition: border-color 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
+}
+.AdvancedSearchButton:hover,
+.CollectionsButton:hover { border-color: var(--gs-fg) !important; color: var(--gs-fg) !important; }
+
+/* Filter bar and section headers: small letter-spaced labels */
+.ViewFiltersBar { background: transparent !important; border-top: 1px solid var(--gs-line) !important; }
+.ViewFiltersBar .MenuHeader,
+.SectionHeaderContent .SectionName {
+  color: var(--gs-fg) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+.SectionHeaderContent { background: var(--gs-rail) !important; }
+.SectionHeaderContent .SectionCount {
+  color: var(--gs-mute) !important;
+  font-size: 12px !important;
+  letter-spacing: 0.06em !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Game rows: ink rises from the bottom and the text turns paper.
+   Rows are positioned by the virtual list; no !important on position so its inline style wins. */
+.ReactVirtualized__List .Container:has(> .GameListEntryContainer) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--gs-fg) !important;
+}
+.ReactVirtualized__List .Container:has(> .GameListEntryContainer)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gs-fg);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.45s var(--gs-ease);
+}
+.ReactVirtualized__List .Container:has(> .GameListEntryContainer):is(:hover, .Selected)::before { transform: scaleY(1); }
+.ReactVirtualized__List .Container:has(> .GameListEntryContainer) .HoverOverlay { display: none !important; }
+.GameListEntryContainer .GameListEntryName {
+  font-family: var(--gs-font) !important;
+  font-weight: 600 !important;
+  transition: color 0.3s var(--gs-ease) !important;
+}
+.GameListEntryContainer .GameListEntryLabels,
+.GameListEntryContainer .DownloadProgress {
+  color: var(--gs-mute) !important;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.3s var(--gs-ease) !important;
+}
+.ReactVirtualized__List .Container.Uninstalled:has(> .GameListEntryContainer) { color: var(--gs-mute) !important; }
+.ReactVirtualized__List .Container.Uninstalled:has(> .GameListEntryContainer) .GameIcon { opacity: 0.5; }
+.ReactVirtualized__List .Container.Running:has(> .GameListEntryContainer) { color: var(--gs-ok) !important; }
+.ReactVirtualized__List .Container:is(.Updating, .Synchronizing):has(> .GameListEntryContainer) { color: var(--gs-info) !important; }
+.ReactVirtualized__List .Container.CloudError:has(> .GameListEntryContainer) { color: var(--gs-err) !important; }
+.ReactVirtualized__List .Container:has(> .GameListEntryContainer) .GameListEntryName { color: inherit !important; }
+/* Every state turns paper once the ink is up. */
+.ReactVirtualized__List .Container:has(> .GameListEntryContainer):is(:hover, .Selected),
+.ReactVirtualized__List .Container:has(> .GameListEntryContainer):is(:hover, .Selected) * {
+  color: var(--gs-bg) !important;
+}
+
+/* ================= Library home ================= */
+.ShowcaseHeader,
+.LibraryHome .ShowcaseHeader * {
+  color: var(--gs-fg) !important;
+}
+.ShowcaseHeader {
+  border-top: 1.5px solid var(--gs-fg) !important;
+  padding-top: 10px !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+}
+.AddedDate {
+  color: var(--gs-mute) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+.LibraryItemBox,
+.RecentGame,
+.AppPortraitBanner { border-radius: 4px !important; }
+.LibraryItemActionButton {
+  border-radius: var(--gs-pill) !important;
+  background: var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+  box-shadow: none !important;
+}
+.LibraryItemActionButton svg { fill: var(--gs-bg) !important; color: var(--gs-bg) !important; }
+.RecentGameFooter { background: var(--gs-glass) !important; color: var(--gs-fg) !important; }
+.PlaytimeDetails { color: var(--gs-mute) !important; font-variant-numeric: tabular-nums; }
+.PartnerEventRowCapsule_Container {
+  background: transparent !important;
+  border: 1px solid var(--gs-line) !important;
+  border-radius: 6px !important;
+}
+.AddShowcase { border: 1px dashed var(--gs-line) !important; border-radius: 6px !important; color: var(--gs-mute) !important; }
+
+/* ================= Game page ================= */
+/* Hero art stays; the gradient under it fades into the sheet, not into Steam blue. */
+.TopCapsule .TopGradient,
+.HeaderBackgroundImage + .TopGradient {
+  background: linear-gradient(180deg, transparent 40%, var(--gs-bg)) !important;
+}
+.ImgBlur,
+.ImgBlurBackdrop { opacity: 0.25 !important; }
+
+/* Text title when a game has no logo: the dashboard's band title */
+.TitleSection .SVGTitle,
+.TitleSection .SVGTitle text {
+  font-family: var(--gs-font) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.045em !important;
+  fill: var(--gs-fg) !important;
+  color: var(--gs-fg) !important;
+}
+
+/* Play bar: a ruled strip, no glass slab */
+.PlayBar,
+.PlayBar.Glassy,
+.PlayBar .InnerContainer {
+  background: var(--gs-bg) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border-top: 1.5px solid var(--gs-fg) !important;
+  border-bottom: 1px solid var(--gs-line) !important;
+}
+.PlayBar.StickyHeader { background: var(--gs-glass) !important; -webkit-backdrop-filter: blur(14px) !important; backdrop-filter: blur(14px) !important; }
+
+/* Stats: the dashboard's fact row, hairline dividers and heavy numbers */
+.GameStatsSection .GameStat { background: transparent !important; border-left: 1px solid var(--gs-line) !important; }
+.GameStatsSection .GameStat:first-child { border-left: 0 !important; }
+.GameStatIcon { color: var(--gs-mute) !important; fill: var(--gs-mute) !important; }
+.PlayBarLabel {
+  color: var(--gs-mute) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+.PlayBarDetailLabel {
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.03em !important;
+  font-variant-numeric: tabular-nums;
+}
+.AchievementCountLabel { color: var(--gs-fg) !important; font-weight: 900 !important; font-variant-numeric: tabular-nums; }
+
+/* Play button: a solid ink pill with a prism edge.
+   Install/Update (no .Green) is the outline pill; Stop is the error outline. */
+.PlayButtonContainer,
+.PlayButtonContainer .PlayButton {
+  border-radius: var(--gs-pill) !important;
+  box-shadow: none !important;
+}
+.PlayButtonContainer .PlayButton {
+  background: var(--gs-prism) bottom / 100% 3px no-repeat, var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+  border: 1px solid var(--gs-fg) !important;
+  transition: filter 0.25s var(--gs-ease) !important;
+}
+.PlayButtonContainer:not(.Green) .PlayButton {
+  background: transparent !important;
+  color: var(--gs-fg) !important;
+}
+.PlayButtonContainer:not(.Green) .PlayButton:hover {
+  background: var(--gs-prism) bottom / 100% 3px no-repeat, var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+}
+.PlayButtonContainer.Green .PlayButton,
+.PlayButtonContainer .Green.PlayButton,
+.PlayButtonContainer .Green > .ButtonChild {
+  background: var(--gs-prism) bottom / 100% 3px no-repeat, var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+}
+.PlayButtonContainer .PlayButton:hover { filter: brightness(1.08); }
+.PlayButtonContainer :is(.ShutdownAppButton, .ForceShutdownButton) .PlayButton,
+.PlayButtonContainer .PlayButton:is(.ShutdownAppButton, .ForceShutdownButton) {
+  background: transparent !important;
+  color: var(--gs-err) !important;
+  border-color: var(--gs-err) !important;
+}
+.PlayButtonContainer .PlayButton *,
+.PlayButtonContainer .PlayButton svg {
+  color: inherit !important;
+  fill: currentColor !important;
+}
+.PlayButtonContainer .PlayButton .ButtonText {
+  font-family: var(--gs-font) !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: uppercase !important;
+}
+.PlayButtonContainer.Disabled .PlayButton { opacity: 0.5 !important; }
+/* Launch-options chevron: the right cap of the same pill, split by a paper hairline */
+.PlayButtonContainer:has(.StreamingSelector) .PlayButton {
+  border-radius: var(--gs-pill) 0 0 var(--gs-pill) !important;
+}
+.PlayButtonContainer .StreamingSelector {
+  margin-left: 0 !important;
+  background: var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+  fill: var(--gs-bg) !important;
+  border: 1px solid var(--gs-fg) !important;
+  border-left: 1px solid var(--gs-bg) !important;
+  border-radius: 0 var(--gs-pill) var(--gs-pill) 0 !important;
+}
+.PlayButtonContainer:not(.Green):not(:has(.Green)) .StreamingSelector {
+  background: transparent !important;
+  color: var(--gs-fg) !important;
+  fill: var(--gs-fg) !important;
+  border-left-color: var(--gs-line) !important;
+}
+
+/* Gear, info, favourite: round hairline buttons */
+.AppButtonsContainer > * {
+  border: 1px solid var(--gs-line) !important;
+  border-radius: var(--gs-pill) !important;
+  background: transparent !important;
+  color: var(--gs-mute) !important;
+  transition: border-color 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
+}
+.AppButtonsContainer > *:hover { border-color: var(--gs-fg) !important; color: var(--gs-fg) !important; }
+
+/* Tab strip (Store page / DLC / Community Hub ...) */
+.LinksSection { background: transparent !important; border-bottom: 1px solid var(--gs-line) !important; }
+.LinksSection .LinkInner {
+  color: var(--gs-mute) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  border-radius: var(--gs-pill) !important;
+  transition: color 0.25s var(--gs-ease) !important;
+}
+.LinksSection .LinkInner:hover { color: var(--gs-fg) !important; }
+
+/* Sections: rules instead of cards */
+.AppDetailsSection .SectionHeader,
+.SectionHeader {
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+.AppDetailsSectionContainer {
+  border-top: 1.5px solid var(--gs-fg) !important;
+  border-radius: 0 !important;
+}
+
+/* Progress: hairline track, prism fill */
+.AchievementProgress .ProgressBar,
+.AchievementProgressBar,
+.DetailsProgressBar,
+.DownloadProgressBar,
+.ProgressBarWrapper {
+  background: var(--gs-line) !important;
+  border-radius: 2px !important;
+  overflow: hidden;
+}
+.AchievementProgressBar > div,
+.AchievementProgress .ProgressBar > div,
+.ProgressBarWrapper .ProgressBar,
+.DetailsProgressBar > div,
+.DownloadProgressBar > div {
+  background: var(--gs-prism) !important;
+  background-size: 100% 100% !important;
+}
+
+/* ================= Bottom bar ================= */
+.BottomBarContainer,
+.BottomBarContainer .BottomBar {
+  background: var(--gs-rail) !important;
+  border-top: 1px solid var(--gs-line) !important;
+  box-shadow: none !important;
+}
+.BottomBarContainer .StatusLine,
+.BottomBarContainer .Percentage {
+  color: var(--gs-mute) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  font-variant-numeric: tabular-nums;
+}
+.AddGameButton,
+.FriendsButton {
+  border: 1px solid var(--gs-fg) !important;
+  border-radius: var(--gs-pill) !important;
+  background: transparent !important;
+  color: var(--gs-fg) !important;
+  font-weight: 600 !important;
+  transition: background 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
+}
+.AddGameButton:hover,
+.FriendsButton:hover { background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+.AddGameButton:hover *,
+.FriendsButton:hover * { color: var(--gs-bg) !important; fill: var(--gs-bg) !important; }
+
+/* ================= Downloads page ================= */
+.DownloadsPage { background: transparent !important; }
+.DownloadsPage .DownloadGraph { filter: grayscale(1) contrast(1.1); }
+.DownloadSectionActiveItem,
+.SectionList .SectionItem {
+  background: transparent !important;
+  border-bottom: 1px solid var(--gs-line) !important;
+  border-radius: 0 !important;
+}
+.ActiveItemProgressBar {
+  background: var(--gs-line) !important;
+  border-radius: 2px !important;
+}
+.ActiveItemProgressBar > div,
+.DownloadsPage .ProgressBar > div {
+  background: var(--gs-prism) !important;
+}

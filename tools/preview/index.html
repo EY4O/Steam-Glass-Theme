@@ -1,0 +1,179 @@
+<!doctype html>
+<!-- Steam Glass preview: a mock Steam library built from Steam's real (Millennium-readable) class names.
+     It loads the theme's own CSS so the look can be checked without Steam. Serve the repo root and open
+     /tools/preview/index.html (?mode=paper for Paper). -->
+<html class="MillenniumWindow_MainSteamWindow">
+<head>
+<meta charset="utf-8">
+<title>Steam Glass preview</title>
+<link rel="stylesheet" href="../../libraryroot.custom.css">
+<link id="mode" rel="stylesheet" href="../../modes/ink.css">
+<style>
+/* Mock layout only: stands in for Steam's own layout CSS, which the theme does not replace. */
+body { margin: 0; height: 100vh; display: flex; flex-direction: column; font-size: 14px; }
+.TitleBar { display: flex; align-items: center; gap: 18px; height: 30px; padding: 0 12px; }
+.RootMenuButton > div { font-size: 13px; }
+.mockctl { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+.mockctl button { font: 600 12px var(--gs-font); padding: 4px 10px; cursor: pointer; }
+.SuperNavBar { display: flex; align-items: center; height: 52px; padding: 0 12px; }
+.SuperNav { display: flex; align-items: center; gap: 4px; }
+.SuperNav .Arrow { font-size: 18px; padding: 0 6px; }
+.SuperNavMenu .MenuButton { display: inline-flex; align-items: center; height: 34px; padding: 0 16px; font-size: 20px; }
+.ContentFrame { flex: 1; display: flex; min-height: 0; }
+.LeftListSizableContainer { width: 300px; display: flex; flex-direction: column; }
+.GameListHomeAndSearch { padding: 0; }
+.HomeBox .Bar { display: flex; justify-content: space-between; padding: 14px 20px; font-size: 15px; }
+.searchrow { display: flex; gap: 8px; align-items: center; padding: 14px 20px 10px; }
+.SearchInput { flex: 1; } .SearchInput input { width: 100%; padding: 8px 0; outline: none; }
+.AdvancedSearchButton { padding: 5px 10px; font-size: 12px; }
+.ViewFiltersBar { padding: 10px 20px; display: flex; justify-content: space-between; }
+.SectionHeaderContent { display: flex; gap: 10px; padding: 14px 20px 6px; }
+.ReactVirtualized__List { overflow: auto; flex: 1; }
+.ReactVirtualized__List .Container { height: 34px; }
+.GameListEntryContainer { display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 20px; }
+.GameIcon { width: 16px; height: 16px; border-radius: 3px; background: linear-gradient(135deg, #7a7a7a, #3a3a3a); flex-shrink: 0; }
+.GameListEntryName { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.GameListEntryLabels { font-size: 12px; }
+.MainPanel { flex: 1; overflow: auto; display: flex; flex-direction: column; }
+.TopCapsule { position: relative; height: 300px; flex-shrink: 0; overflow: hidden; }
+.HeaderBackgroundImage { position: absolute; inset: 0; background: radial-gradient(60% 90% at 70% 20%, #e05b2d, transparent 60%), radial-gradient(70% 90% at 20% 80%, #2c4a8a, transparent 60%), #1a1a1a; }
+.TopGradient { position: absolute; inset: 0; }
+.TitleSection { position: absolute; left: 40px; bottom: 26px; }
+.SVGTitle { font-size: 96px; line-height: 0.84; }
+.PlayBar { display: flex; align-items: center; gap: 28px; padding: 16px 40px; flex-shrink: 0; }
+.PlayButtonContainer { display: inline-flex; }
+.PlayButton { display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 28px; cursor: pointer; font-size: 18px; }
+.StreamingSelector { display: inline-flex; align-items: center; padding: 0 12px; background: var(--gs-fg); color: var(--gs-bg); }
+.GameStatsSection { display: flex; flex: 1; }
+.GameStat { padding: 0 22px; display: flex; flex-direction: column; gap: 6px; }
+.PlayBarDetailLabel { font-size: 22px; line-height: 1; }
+.AppButtonsContainer { display: flex; gap: 8px; }
+.AppButtonsContainer > * { width: 34px; height: 34px; display: grid; place-items: center; cursor: pointer; }
+.LinksSection { display: flex; gap: 8px; padding: 10px 32px; }
+.LinkInner { padding: 6px 12px; }
+.body { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; padding: 32px 40px 60px; }
+.AppDetailsSectionContainer { padding-top: 14px; margin-bottom: 36px; }
+.AchievementProgress { margin-top: 14px; }
+.AchievementProgressBar { height: 6px; margin-top: 10px; } .AchievementProgressBar > div { height: 100%; width: 62%; }
+.lede { font-size: 28px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.12; margin-top: 16px; max-width: 30ch; }
+.activity { margin-top: 14px; border-top: 1px solid var(--gs-line); }
+.activity div { padding: 12px 0; border-bottom: 1px solid var(--gs-line); color: var(--gs-mute); font-size: 13px; }
+.activity b { color: var(--gs-fg); font-weight: 600; }
+.ctx { position: fixed; right: 40px; top: 210px; width: 210px; padding: 6px 0; }
+.contextMenuItem { padding: 8px 16px; cursor: default; font-size: 13px; }
+.ContextMenuSeparator { margin: 6px 0; }
+.BottomBarContainer { display: flex; align-items: center; justify-content: space-between; height: 46px; padding: 0 16px; flex-shrink: 0; }
+.AddGameButton, .FriendsButton { padding: 6px 14px; font-size: 13px; cursor: pointer; }
+.DownloadStatus { display: flex; align-items: center; gap: 12px; width: 320px; }
+.ProgressBarWrapper { flex: 1; height: 4px; } .ProgressBarWrapper .ProgressBar { height: 100%; width: 45%; }
+</style>
+</head>
+<body class="DesktopUI">
+  <div class="TopBar">
+    <div class="TitleBar">
+      <div class="RootMenuBar" style="display:flex;gap:16px">
+        <div class="RootMenuButton"><div>Steam</div></div><div class="RootMenuButton"><div>View</div></div>
+        <div class="RootMenuButton"><div>Friends</div></div><div class="RootMenuButton"><div>Games</div></div><div class="RootMenuButton"><div>Help</div></div>
+      </div>
+      <div class="mockctl">
+        <button class="DialogButton" onclick="setMode('ink')">Ink</button>
+        <button class="DialogButton" onclick="setMode('paper')">Paper</button>
+        <div class="WalletBalance" style="padding:3px 10px;font-size:12px">$24.12</div>
+      </div>
+    </div>
+    <div class="SuperNavBar">
+      <div class="SuperNav">
+        <span class="Arrow">&lsaquo;</span><span class="Arrow">&rsaquo;</span>
+        <div class="SuperNavMenu"><div class="MenuButton">Store</div></div>
+        <div class="SuperNavMenu Selected"><div class="MenuButton">Library</div></div>
+        <div class="SuperNavMenu"><div class="MenuButton">Community</div></div>
+        <div class="SuperNavMenu"><div class="MenuButton">Sanscura</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ContentFrame">
+    <div class="LeftListSizableContainer">
+      <div class="GameListHomeAndSearch">
+        <div class="HomeBox"><div class="Bar Selected"><span>Home</span><span style="font-variant-numeric:tabular-nums">06</span></div></div>
+        <div class="searchrow">
+          <div class="SearchInput"><input class="DialogInput" placeholder="Search"></div>
+          <div class="AdvancedSearchButton">Filter</div>
+        </div>
+      </div>
+      <div class="ViewFiltersBar"><span class="MenuHeader">Games</span><span class="MenuHeader" style="color:var(--gs-mute)!important">Ready to play</span></div>
+      <div class="ReactVirtualized__List">
+        <div class="SectionHeaderContent"><span class="SectionName">Favorites</span><span class="SectionCount">(3)</span></div>
+        <div class="Container Installed Selected"><div class="GameListEntryContainer"><i class="GameIcon"></i><span class="GameListEntryName">Hades II</span></div></div>
+        <div class="Container Installed Running"><div class="GameListEntryContainer"><i class="GameIcon"></i><span class="GameListEntryName">Balatro</span><span class="GameListEntryLabels">Running</span></div></div>
+        <div class="Container Installed Updating"><div class="GameListEntryContainer"><i class="GameIcon"></i><span class="GameListEntryName">Deep Rock Galactic</span><span class="DownloadProgress">62%</span></div></div>
+        <div class="SectionHeaderContent"><span class="SectionName">Uncategorized</span><span class="SectionCount">(5)</span></div>
+        <div class="Container Installed"><div class="GameListEntryContainer"><i class="GameIcon"></i><span class="GameListEntryName">Celeste</span></div></div>
+        <div class="Container Installed"><div class="GameListEntryContainer"><i class="GameIcon"></i><span class="GameListEntryName">Disco Elysium</span></div></div>
+        <div class="Container Uninstalled"><div class="GameListEntryContainer"><i class="GameIcon"></i><span class="GameListEntryName">Outer Wilds</span></div></div>
+        <div class="Container Uninstalled"><div class="GameListEntryContainer"><i class="GameIcon"></i><span class="GameListEntryName">Return of the Obra Dinn</span></div></div>
+        <div class="Container Installed"><div class="GameListEntryContainer"><i class="GameIcon"></i><span class="GameListEntryName">Slay the Spire</span><span class="GameListEntryLabels">Update queued</span></div></div>
+      </div>
+    </div>
+
+    <div class="MainPanel">
+      <div class="TopCapsule">
+        <div class="HeaderBackgroundImage"></div>
+        <div class="TopGradient"></div>
+        <div class="TitleSection"><div class="SVGTitle">Hades II</div></div>
+      </div>
+      <div class="PlayBar">
+        <div class="PlayButtonContainer Green"><div class="PlayButton ButtonChild"><span>&#9654;</span><span class="ButtonText">Play</span></div><div class="StreamingSelector">&#9662;</div></div>
+        <div class="GameStatsSection">
+          <div class="GameStat"><span class="PlayBarLabel">Last played</span><span class="PlayBarDetailLabel">Today</span></div>
+          <div class="GameStat"><span class="PlayBarLabel">Play time</span><span class="PlayBarDetailLabel">41.6 hrs</span></div>
+          <div class="GameStat"><span class="PlayBarLabel">Achievements</span><span class="PlayBarDetailLabel">31/49</span></div>
+        </div>
+        <div class="AppButtonsContainer"><div>&#9881;</div><div>i</div><div>&#9734;</div></div>
+      </div>
+      <div class="LinksSection"><span class="LinkInner">Store page</span><span class="LinkInner">DLC</span><span class="LinkInner">Community hub</span><span class="LinkInner">Discussions</span><span class="LinkInner">Guides</span></div>
+      <div class="body">
+        <div>
+          <div class="AppDetailsSectionContainer"><div class="SectionHeader">Activity</div>
+            <div class="lede">Back in the Underworld: 41 hours in, 3 friends playing this week.</div>
+            <div class="activity"><div><b>Patch 1.2</b> · Balance changes to Aspects</div><div><b>Moonlight</b> earned “Night and Darkness”</div><div><b>Hollow</b> played for 3 hours</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="AppDetailsSectionContainer"><div class="SectionHeader">Achievements</div>
+            <div class="AchievementProgress"><span class="AchievementCountLabel">You've unlocked 31/49 (63%)</span><div class="AchievementProgressBar"><div></div></div></div>
+          </div>
+          <div class="AppDetailsSectionContainer"><div class="SectionHeader">Friends who play</div>
+            <div class="activity"><div><b>3 friends</b> have played recently</div></div>
+          </div>
+          <button class="DialogButton" style="padding:8px 16px">Manage</button>
+          <button class="DialogButton Primary" style="padding:8px 16px;margin-left:6px">Properties</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contextMenu ctx">
+    <div class="contextMenuContents">
+      <div class="contextMenuItem">Play</div><div class="contextMenuItem active">Add to favorites</div><div class="contextMenuItem">Add to</div>
+      <div class="ContextMenuSeparator"></div>
+      <div class="contextMenuItem">Manage</div><div class="contextMenuItem">Properties…</div>
+    </div>
+  </div>
+
+  <div class="BottomBarContainer">
+    <div class="AddGameButton">+ Add a game</div>
+    <div class="DownloadStatus"><span class="StatusLine">Downloading · 3 of 5 items</span><div class="ProgressBarWrapper"><div class="ProgressBar"></div></div></div>
+    <div class="FriendsButton">Friends &amp; Chat</div>
+  </div>
+<script>
+// ?mode=paper switches the sheet; ?shot hides the mock-only mode buttons for screenshots.
+const params = new URLSearchParams(location.search);
+function setMode(m) {
+  document.getElementById('mode').href = '../../modes/' + m + '.css';
+}
+if (params.get('mode') === 'paper') setMode('paper');
+if (params.has('shot')) document.querySelectorAll('.mockctl .DialogButton').forEach(b => b.remove());
+</script>
+</body>
+</html>

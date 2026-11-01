@@ -1,0 +1,40 @@
+{
+  "name": "Steam Glass",
+  "author": "sanscura",
+  "description": "Ink on paper. A Swiss-editorial Steam theme from Glass Dashboard: heavy uppercase type, hairline rules, pill controls and a prism accent, in Paper and Ink.",
+  "version": "1.0.0",
+  "tags": ["Minimal", "Light", "Dark", "Editorial", "Monochrome"],
+  "github": {
+    "owner": "EY4O",
+    "repo_name": "Steam-Glass-Theme"
+  },
+  "funding": {
+    "kofi": "looneth"
+  },
+  "header_image": "https://raw.githubusercontent.com/EY4O/Steam-Glass-Theme/main/docs/images/hero.png",
+  "splash_image": "https://raw.githubusercontent.com/EY4O/Steam-Glass-Theme/main/docs/images/paper.png",
+
+  "UseDefaultPatches": true,
+  "Steam-WebKit": "webkit.css",
+
+  "Conditions": {
+    "Mode": {
+      "description": "Paper is the light sheet, Ink is the dark one. Steam reloads its UI when you change this.",
+      "default": "Ink",
+      "tab": "Style",
+      "values": {
+        "Ink": { "TargetCss": { "affects": [".*"], "src": "modes/ink.css" } },
+        "Paper": { "TargetCss": { "affects": [".*"], "src": "modes/paper.css" } }
+      }
+    },
+    "Prism accent": {
+      "description": "The rainbow gradient on progress bars, the active tab and the Play button. Off keeps the theme pure monochrome.",
+      "default": "yes",
+      "tab": "Style",
+      "values": {
+        "yes": {},
+        "no": { "TargetCss": { "affects": [".*"], "src": "options/no-prism.css" } }
+      }
+    }
+  }
+}

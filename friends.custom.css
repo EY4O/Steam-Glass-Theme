@@ -1,0 +1,165 @@
+/* Steam Glass: friends list and chat windows (.friendsui-container). */
+@import url("shared/tokens.css");
+@import url("shared/client.css");
+
+body,
+.friendlist,
+.FriendsListContent,
+.chatDialogs,
+.chatWindow,
+.ChatTabs,
+.titleBarContainer {
+  background: var(--gs-bg) !important;
+  background-image: none !important;
+  color: var(--gs-fg) !important;
+}
+
+/* ================= Friends list ================= */
+.friendListHeaderContainer,
+.currentUserContainer {
+  background: var(--gs-rail) !important;
+  border-bottom: 1px solid var(--gs-line) !important;
+}
+.currentUserContainer .playerName {
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.02em !important;
+}
+.socialListTab {
+  border-radius: var(--gs-pill) !important;
+  color: var(--gs-mute) !important;
+  font-weight: 600 !important;
+  transition: color 0.25s var(--gs-ease), background 0.25s var(--gs-ease) !important;
+}
+.socialListTab:hover { color: var(--gs-fg) !important; }
+.socialListTab.active,
+.socialListTab.Active { background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+
+/* Group headers: the dashboard's ACTIVE / QUIET / STALE labels */
+.friendGroup .groupName,
+.friendsListSectionTitle {
+  color: var(--gs-fg) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+.friendsListSectionTitle { background: var(--gs-bg) !important; border-top: 1px solid var(--gs-line) !important; }
+
+/* Rows: the same ink wipe as the library */
+.friend {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+.friend::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gs-fg);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.45s var(--gs-ease);
+}
+.friend:hover::before { transform: scaleY(1); }
+.friend .playerName { font-weight: 600 !important; transition: color 0.3s var(--gs-ease) !important; }
+.friend .richPresenceLabel { color: var(--gs-mute) !important; transition: color 0.3s var(--gs-ease) !important; }
+.friend.online .playerName { color: var(--gs-fg) !important; }
+.friend.ingame .playerName { color: var(--gs-ok) !important; }
+.friend.ingame .richPresenceLabel { color: var(--gs-ok) !important; opacity: 0.8; }
+.friend.offline .playerName { color: var(--gs-mute) !important; }
+.friend.awayOrSnooze .playerName { color: var(--gs-mute) !important; }
+.friend:hover .playerName,
+.friend:hover .richPresenceLabel,
+.friend:hover * { color: var(--gs-bg) !important; }
+
+/* Status: one legend, round dots and a thin stripe under the avatar */
+.avatarStatus { border-radius: 0 !important; }
+.online .avatarStatus { background: var(--gs-info) !important; }
+.ingame .avatarStatus { background: var(--gs-ok) !important; }
+.offline .avatarStatus { background: var(--gs-faint) !important; }
+.avatar,
+.avatarHolder img { border-radius: 4px !important; }
+
+.friendListFooter {
+  background: var(--gs-rail) !important;
+  border-top: 1px solid var(--gs-line) !important;
+  color: var(--gs-mute) !important;
+  font-size: 12px !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+}
+
+/* ================= Chat ================= */
+.ChatTabs,
+.chatTabSetContainer { border-bottom: 1px solid var(--gs-line) !important; }
+.ChatTab {
+  border-radius: var(--gs-pill) !important;
+  background: transparent !important;
+  color: var(--gs-mute) !important;
+  font-weight: 600 !important;
+}
+.ChatTab:hover { color: var(--gs-fg) !important; }
+.ChatTab.Active { background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+.ChatTab.Active * { color: var(--gs-bg) !important; }
+.ChatTab .UnreadGlow { background: var(--gs-prism) !important; height: 2px !important; }
+
+.chatHeader {
+  background: var(--gs-bg) !important;
+  border-bottom: 1px solid var(--gs-line) !important;
+}
+.chatHeader .playerName,
+.chatHeader .chatRoomName {
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.02em !important;
+}
+
+.chatHistory,
+.chatHistoryScroll { background: transparent !important; }
+.ChatMessageBlock {
+  border-top: 1px solid var(--gs-line) !important;
+  padding-top: 10px !important;
+}
+.ChatSpeaker .speakerName { color: var(--gs-fg) !important; font-weight: 600 !important; }
+.ChatSpeaker .speakerName.SpeakerName_InGame,
+.SpeakerName_InGame { color: var(--gs-ok) !important; }
+.speakerTimeStamp,
+.FriendChatTimeStamp {
+  color: var(--gs-mute) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  font-variant-numeric: tabular-nums;
+}
+.msg .msgText { color: var(--gs-fg) !important; }
+.msgText a { color: inherit !important; text-decoration: underline !important; text-underline-offset: 3px; }
+.FriendChatTypingNotification { color: var(--gs-mute) !important; }
+
+/* Entry: the underline field, a pill Send */
+.chatEntry {
+  background: var(--gs-bg) !important;
+  border-top: 1px solid var(--gs-line) !important;
+}
+.chatEntry .chatTextarea,
+.chatTextarea {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--gs-fg) !important;
+  border-radius: 0 !important;
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  caret-color: #1e90ff;
+}
+.chatSubmitButton {
+  border: 1px solid var(--gs-fg) !important;
+  border-radius: var(--gs-pill) !important;
+  background: transparent !important;
+  color: var(--gs-fg) !important;
+  transition: background 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
+}
+.chatSubmitButton:hover { background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+.chatSubmitButton:hover svg { fill: var(--gs-bg) !important; }

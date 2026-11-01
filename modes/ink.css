@@ -1,0 +1,16 @@
+/* Ink: the dashboard's dark sheet. Paper text on #111. */
+:root {
+  --gs-bg: #111;
+  --gs-rail: #181818;
+  --gs-raise: #1e1e1e;
+  --gs-fg: #e9e9e7;
+  --gs-mute: rgba(233, 233, 231, 0.62);
+  --gs-faint: rgba(233, 233, 231, 0.28);
+  --gs-line: rgba(233, 233, 231, 0.16);
+  --gs-err: #ef7a62;
+  --gs-warn: #e0a43a;
+  --gs-info: #6aa8ff;
+  --gs-ok: #6fd39a;
+  --gs-glass: rgba(17, 17, 17, 0.88);
+  color-scheme: dark;
+}
