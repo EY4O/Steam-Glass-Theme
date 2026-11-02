@@ -55,3 +55,68 @@
   --gs-deal-fg: var(--gs-prism-ink);
   --gs-deal-anim: gs-shimmer 6s linear infinite;
 }
+
+/* Steam's newer React price widget has hashed class names and no data-discount; its
+   aria-label ("50% off. ...") is the only stable hook, and it is English only.
+   The badge is the only child of the widget's first box. */
+:is(
+  [aria-label^="50% off"],
+  [aria-label^="51% off"],
+  [aria-label^="52% off"],
+  [aria-label^="53% off"],
+  [aria-label^="54% off"],
+  [aria-label^="55% off"],
+  [aria-label^="56% off"],
+  [aria-label^="57% off"],
+  [aria-label^="58% off"],
+  [aria-label^="59% off"],
+  [aria-label^="60% off"],
+  [aria-label^="61% off"],
+  [aria-label^="62% off"],
+  [aria-label^="63% off"],
+  [aria-label^="64% off"],
+  [aria-label^="65% off"],
+  [aria-label^="66% off"],
+  [aria-label^="67% off"],
+  [aria-label^="68% off"],
+  [aria-label^="69% off"],
+  [aria-label^="70% off"],
+  [aria-label^="71% off"],
+  [aria-label^="72% off"],
+  [aria-label^="73% off"],
+  [aria-label^="74% off"],
+  [aria-label^="75% off"],
+  [aria-label^="76% off"],
+  [aria-label^="77% off"],
+  [aria-label^="78% off"],
+  [aria-label^="79% off"],
+  [aria-label^="80% off"],
+  [aria-label^="81% off"],
+  [aria-label^="82% off"],
+  [aria-label^="83% off"],
+  [aria-label^="84% off"],
+  [aria-label^="85% off"],
+  [aria-label^="86% off"],
+  [aria-label^="87% off"],
+  [aria-label^="88% off"],
+  [aria-label^="89% off"],
+  [aria-label^="90% off"],
+  [aria-label^="91% off"],
+  [aria-label^="92% off"],
+  [aria-label^="93% off"],
+  [aria-label^="94% off"],
+  [aria-label^="95% off"],
+  [aria-label^="96% off"],
+  [aria-label^="97% off"],
+  [aria-label^="98% off"],
+  [aria-label^="99% off"],
+  [aria-label^="100% off"]
+)[role="link"] > :first-child > :only-child {
+  background: var(--gs-prism-loop) !important;
+  background-size: 200% 100% !important;
+  color: var(--gs-prism-ink) !important;
+  animation: gs-shimmer 6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  [aria-label*="% off"][role="link"] > :first-child > :only-child { animation: none !important; }
+}

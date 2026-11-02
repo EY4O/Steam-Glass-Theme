@@ -156,23 +156,78 @@ body.DesktopUI {
   font: 500 15px var(--gs-font) !important;
 }
 .GameListHomeAndSearch .SearchInput input:focus { border-bottom-width: 2px !important; }
-.AdvancedSearchButton,
-.CollectionsButton {
+/* Filter and collections buttons keep Steam's square shape. Steam paints the filter's
+   states on its container, and the collections button is the Bar inside its wrapper. */
+.AdvancedSearchContainer,
+.CollectionsButton .Bar {
   border: 0 !important;
-  border-radius: var(--gs-pill) !important;
+  border-radius: 4px !important;
   background: var(--gs-soft) !important;
   color: var(--gs-mute) !important;
   transition: background 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
 }
-.AdvancedSearchButton:hover,
-.CollectionsButton:hover { background: var(--gs-line) !important; color: var(--gs-fg) !important; }
-/* Steam paints the filter button's hover and open state on the square container around it;
-   move both onto the round button. */
-.AdvancedSearchContainer { background: transparent !important; }
-.AdvancedSearchContainer:is(:hover, .Extended):not(.Disabled) .AdvancedSearchButton {
-  background: var(--gs-line) !important;
+.AdvancedSearchContainer:not(.Disabled, .Extended):hover,
+.CollectionsButton .Bar:hover { background: var(--gs-line) !important; color: var(--gs-fg) !important; }
+.CollectionsButton { background: transparent !important; border-radius: 0 !important; }
+/* Steam sizes this one with a 1px clear border; keep it, so it matches the filter button at 32px. */
+.CollectionsButton .Bar { border: 1px solid transparent !important; }
+/* The icon is four small squares Steam fills grey, then white on hover. */
+.CollectionsButton .CollectionIconBox { background: currentColor !important; border-radius: 1px !important; }
+/* Showing all collections: the button inks in, like the filter with filters applied. */
+.CollectionsButton .Bar.Selected { background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+.AdvancedSearchButton { border-radius: 0 !important; background: transparent !important; color: inherit !important; }
+.AdvancedSearchButton svg path { fill: currentColor !important; }
+/* Filters applied: the button inks in. */
+.AdvancedSearchButton.Active { border-radius: 4px !important; background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+/* Open: the button, Steam's bridge and the panel share one surface, so they read as one tab. */
+.AdvancedSearchContainer.Extended {
+  border-start-end-radius: 0 !important;
+  border-end-end-radius: 0 !important;
+  background: var(--gs-raise) !important;
   color: var(--gs-fg) !important;
 }
+.AdvancedSearchPaneContainer::before { background: var(--gs-raise) !important; }
+
+/* ================= Library filters panel ================= */
+.AdvancedSearchPane {
+  background: var(--gs-raise) !important;
+  color: var(--gs-fg) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45) !important;
+}
+/* Section labels: the small-caps label, not Steam blue */
+.AdvancedSearchPane :is(.FilterBucketLabel, .SearchBucketLabel) {
+  color: var(--gs-mute) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+/* Steam turns labels white on hover, which vanishes in Paper. */
+.AdvancedSearchPane .FilterBucket .Checkbox,
+.AdvancedSearchPane .FilterBucket .Checkbox:hover { color: var(--gs-fg) !important; }
+.AdvancedSearchPane .FilterBucket .Description { color: var(--gs-mute) !important; }
+/* Ticked: an ink box with the tick knocked out (Steam's tick is a blue gradient stroke). */
+.AdvancedSearchPane .DialogCheckbox.Active { background: var(--gs-fg) !important; }
+.AdvancedSearchPane .DialogCheckbox .SVGIcon_DialogCheck path { stroke: var(--gs-bg) !important; }
+/* Gamepad and Steam Deck dropdowns: Steam marks a chosen value in blue; ink it instead. */
+.AdvancedSearchPane .CompatDropDown.ValueSelected ._DialogInputContainer {
+  background: var(--gs-fg) !important;
+  border-color: var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+}
+.AdvancedSearchPane .CompatDropDown .DialogDropDown_Arrow svg { fill: currentColor !important; }
+.AdvancedSearchPane .CompatDropDown.ValueSelected .DialogDropDown_Arrow { color: var(--gs-bg) !important; }
+/* Save as Dynamic Collection: the panel's one primary action, on one line with its icon. */
+.AdvancedSearchPane .SaveButton {
+  background: var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+  white-space: nowrap !important;
+}
+.AdvancedSearchPane .SaveButton :is(span, svg) { background: transparent !important; }
+.AdvancedSearchPane .SaveButton span { display: inline-flex !important; align-items: center !important; gap: 6px !important; }
+.AdvancedSearchPane .SaveButton svg { height: 16px !important; width: auto !important; fill: currentColor !important; }
+.AdvancedSearchPane .SaveButton:is(.Disabled, :disabled) { background: var(--gs-soft) !important; color: var(--gs-fg) !important; }
 
 /* Filter bar and section headers: small letter-spaced labels */
 .ViewFiltersBar { background: transparent !important; border-top: 1px solid var(--gs-line) !important; }

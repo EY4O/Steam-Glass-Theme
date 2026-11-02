@@ -37,7 +37,7 @@
       }
     },
     "Rainbow discounts": {
-      "description": "Store discount badges at or above this level get the prism fill with a slow shimmer.",
+      "description": "Store discount badges at or above this level get the prism fill with a slow shimmer. Store pages pick up a change after Steam restarts.",
       "default": "75%+",
       "tab": "Style",
       "values": {

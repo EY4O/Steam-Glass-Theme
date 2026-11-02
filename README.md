@@ -78,7 +78,7 @@ The folder needs `skin.json` directly inside it, not one level deeper.
 3. Open the theme's settings (the gear next to it) and go to the **Style** tab.
 4. Set **Mode** to **Ink** or **Paper**. Steam reloads its UI when you change it.
 5. Turn **Prism accent** off if you want pure black and white.
-6. Pick when store discounts go rainbow under **Rainbow discounts**: Off, 50%+, 75%+ or 90%+.
+6. Pick when store discounts go rainbow under **Rainbow discounts**: Off, 50%+, 75%+ or 90%+. Restart Steam for store pages to pick up the change.
 
 ---
 
@@ -98,7 +98,7 @@ Millennium matches each Steam window and loads the matching stylesheet:
 | `shared/tokens.css` | Fonts, the prism, easing and fallback colours |
 | `modes/ink.css`, `modes/paper.css` | The two colour sets, loaded by the **Mode** setting |
 | `options/no-prism.css` | Loaded when **Prism accent** is off |
-| `options/deals-50.css`, `deals-75.css`, `deals-90.css` | Pick discount badges by Steam's `data-discount` value for the **Rainbow discounts** setting |
+| `options/deals-50.css`, `deals-75.css`, `deals-90.css` | Pick discount badges (by `data-discount`, or the price widget's label) for the **Rainbow discounts** setting |
 
 Big Picture mode is left as Steam draws it.
 </details>
