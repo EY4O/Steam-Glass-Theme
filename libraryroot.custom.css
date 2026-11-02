@@ -314,6 +314,16 @@ body.DesktopUI {
   font-weight: 600 !important;
   letter-spacing: -0.02em !important;
 }
+/* Library home shelf titles ("Recent Games") are dropdowns. Steam draws them as plain text,
+   so the theme's dropdown pill comes off here; Steam's own hover white would vanish in Paper. */
+.CollectionDropDown .DialogDropDown {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--gs-fg) !important;
+}
+.CollectionDropDown .DialogDropDown:is(:hover, :focus) { color: var(--gs-fg) !important; }
+.CollectionDropDown .DialogDropDown_Arrow svg { fill: currentColor !important; }
 .AddedDate {
   color: var(--gs-mute) !important;
   font-size: 12px !important;
