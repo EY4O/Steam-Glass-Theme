@@ -308,12 +308,25 @@ body.DesktopUI {
   color: var(--gs-fg) !important;
 }
 .ShowcaseHeader {
+  --gs-shelf-pad: 10px;
   border-top: 1.5px solid var(--gs-fg) !important;
-  padding-top: 10px !important;
+  padding-top: var(--gs-shelf-pad) !important;
   font-family: var(--gs-font) !important;
   font-weight: 600 !important;
   letter-spacing: -0.02em !important;
 }
+/* Drag to reorder: Steam grows the header's rule into a band on hover and pins the grip 2px
+   from the top, which assumed no top padding. Centre the grip on the band, below our padding:
+   half the padding box plus half the padding lands on the middle of the content row. */
+.ShowcaseHeader .Rule { background-color: var(--gs-soft) !important; }
+.ShowcaseHeader .DragHandle {
+  top: calc(50% + var(--gs-shelf-pad) / 2) !important;
+  transform: translateY(-50%);
+  stroke: var(--gs-mute) !important;
+  fill: var(--gs-mute) !important;
+}
+/* While reordering, Steam pads the header on all sides and nudges the grip down 10px. */
+:is(.Reordering .ShowcaseHeader, .ShowcaseHeader.Reordering) .DragHandle { top: 50% !important; margin-top: 0 !important; }
 /* Library home shelf titles ("Recent Games") are dropdowns. Steam draws them as plain text,
    so the theme's dropdown pill comes off here; Steam's own hover white would vanish in Paper. */
 .CollectionDropDown .DialogDropDown {
