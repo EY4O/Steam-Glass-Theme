@@ -16,13 +16,49 @@
   --gs-info: #6aa8ff;
   --gs-ok: #6fd39a;
   --gs-glass: rgba(17, 17, 17, 0.88);
+  --gs-soft: rgba(233, 233, 231, 0.08);
+  --gs-glyph: none;
+  --gs-glyph-on-fill: brightness(0);
 }
 
 :root {
   --gs-prism: linear-gradient(90deg, #ff3b3b, #ffb000, #2fd27a, #1e90ff, #a24bff);
+  /* The prism as one seamless period, for fills that drift (rainbow discount badges). */
+  --gs-prism-loop: linear-gradient(90deg, #ff3b3b, #ffb000, #2fd27a, #1e90ff, #a24bff, #ff3b3b);
+  --gs-prism-ink: #111;
   --gs-ease: cubic-bezier(0.7, 0, 0.2, 1);
   --gs-font: "Inter Tight", "Motiva Sans", system-ui, sans-serif;
   --gs-pill: 999px;
+  --gs-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Press feedback and menu entrances: transform-only, so nothing Steam measures moves. */
+  --gs-press-dur: 160ms;
+  --gs-press-play: 0.97;
+  --gs-press-pill: 0.98;
+  --gs-menu-dur: 150ms;
+  --gs-menu-from: 0.97;
+
+  /* The ink wipe. The text flips colour in one step at the moment the ink edge
+     crosses its middle, so it never matches what is behind it. With this curve and
+     duration the edge passes the halfway line at ~42ms; change one, re-measure the other.
+     The hold keeps the ink up through the gap Steam leaves between hover and selection. */
+  --gs-wipe-dur: 320ms;
+  --gs-wipe-ease: var(--gs-ease-out);
+  --gs-wipe-cross: 42ms;
+  --gs-wipe-hold: 60ms;
+  --gs-wipe-out: calc(var(--gs-wipe-hold) + var(--gs-wipe-cross));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --gs-wipe-dur: 0ms;
+    --gs-wipe-cross: 0ms;
+    --gs-wipe-hold: 0ms;
+    /* Presses keep their colour change but don't shrink; menus fade without growing. */
+    --gs-press-play: 1;
+    --gs-press-pill: 1;
+    --gs-menu-from: 1;
+  }
 }
 
 /* Small-caps label: 12px, 500, letter-spaced uppercase, muted. */

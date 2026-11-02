@@ -1,0 +1,17 @@
+/* Rainbow discounts: 90% and up. Steam puts the percentage in data-discount;
+   webkit.css draws the badge from these properties. */
+.discount_block[data-discount="90"],
+.discount_block[data-discount="91"],
+.discount_block[data-discount="92"],
+.discount_block[data-discount="93"],
+.discount_block[data-discount="94"],
+.discount_block[data-discount="95"],
+.discount_block[data-discount="96"],
+.discount_block[data-discount="97"],
+.discount_block[data-discount="98"],
+.discount_block[data-discount="99"],
+.discount_block[data-discount="100"] {
+  --gs-deal-bg: var(--gs-prism-loop);
+  --gs-deal-fg: var(--gs-prism-ink);
+  --gs-deal-anim: gs-shimmer 6s linear infinite;
+}

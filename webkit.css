@@ -53,9 +53,16 @@ a { transition: color 0.25s var(--gs-ease); }
 }
 #global_header .menuitem:hover,
 #global_header .menuitem.active,
+#global_header .menuitem.supernav_active,
 .store_nav .tab:hover,
 .store_nav .tab:hover > span { color: var(--gs-fg) !important; }
 #global_header .menuitem.active { background: var(--gs-prism) bottom / 100% 3px no-repeat !important; }
+/* current markup: Steam draws the active section's bar as a 2.5px #1a9fff ::after under the label */
+#global_header .menuitem.supernav_active::after {
+  background: var(--gs-prism) !important;
+  height: 3px !important;
+  border-radius: 0 !important;
+}
 #store_nav_search_term,
 .store_nav .searchbox {
   background: transparent !important;
@@ -65,12 +72,63 @@ a { transition: color 0.25s var(--gs-ease); }
   box-shadow: none !important;
   color: var(--gs-fg) !important;
 }
+/* Steam paints the logged-out header's inner strip navy on its own. */
+#global_header .content { background: transparent !important; }
+
+/* The v7 store menu is React with hashed classes, so it is reached through its mount point
+   (data-featuretarget) and stable roles. The bar grows to hold the open flyout, so painting
+   it paints the flyout too. Promo tiles in the flyout keep their art. */
+.StoreMenuLoadingPlaceholder .PlaceholderInner { background: none !important; }
+[data-featuretarget="store-menu-v7"] :has(> [role="navigation"]) {
+  background: var(--gs-bg) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: inset 0 -1px 0 var(--gs-line) !important;
+}
+[data-featuretarget="store-menu-v7"] .Panel:not(:has(> [role="navigation"])) { background-image: none !important; }
+[data-featuretarget="store-menu-v7"] [role="navigation"] button,
+[data-featuretarget="store-menu-v7"] [role="navigation"] button * {
+  color: var(--gs-mute) !important;
+  font-family: var(--gs-font) !important;
+  transition: color 0.25s var(--gs-ease);
+}
+[data-featuretarget="store-menu-v7"] [role="navigation"] button:is(:hover, [aria-expanded="true"]),
+[data-featuretarget="store-menu-v7"] [role="navigation"] button:is(:hover, [aria-expanded="true"]) * {
+  color: var(--gs-fg) !important;
+}
+/* The open menu's label underline (Steam's 2.5px blue bar) takes the prism, like the client tabs. */
+[data-featuretarget="store-menu-v7"] [role="navigation"] button > div > div > div {
+  background: var(--gs-prism) !important;
+}
+[data-featuretarget="store-menu-v7"] form[role="search"] {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: inset 0 -1px 0 var(--gs-fg) !important;
+}
+[data-featuretarget="store-menu-v7"] form[role="search"] input {
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  border-bottom-color: transparent !important;
+}
+[data-featuretarget="store-menu-v7"] form[role="search"] input::placeholder { color: var(--gs-mute) !important; }
+[data-featuretarget="store-menu-v7"] form[role="search"] button {
+  background: transparent !important;
+  color: var(--gs-fg) !important;
+}
+[id^="searchSuggestions_"] {
+  background: var(--gs-raise) !important;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45) !important;
+}
+[id^="searchSuggestions_"] a { background: var(--gs-soft) !important; color: var(--gs-fg) !important; }
+[id^="searchSuggestions_"] a * { color: inherit !important; }
+[id^="searchSuggestions_"] a:hover { background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+/* Page header glow art behind "Specials" and other store page titles. */
+.page_header_ctn { background-image: none !important; }
 
 /* ================= Section headings: the dashboard's label + heavy title ================= */
 .home_page_content h2,
 .home_section_title,
-.home_tabs_row .tab_content,
-.page_content h2,
+.page_content h2:where(:not(.pageheader)),
 .leftcol h2,
 .rightcol h2,
 .game_area_description h2 {
@@ -84,6 +142,56 @@ a { transition: color 0.25s var(--gs-ease); }
   border-bottom: 1.5px solid var(--gs-fg) !important;
   padding-bottom: 8px !important;
 }
+/* Store home rows (.title_grid: title, subtitle, "See more" buttons) size the title's column
+   to its content, so a rule on the title came out a different length in every section and
+   stopped short of the buttons. The rule belongs to the whole row instead: a grid item that
+   spans every column and drops below the title, subtitle and buttons. */
+.title_grid .home_section_title {
+  border-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+.title_grid::after {
+  content: "";
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  border-top: 1.5px solid var(--gs-fg);
+}
+.home_section_subtitle {
+  color: var(--gs-mute) !important;
+  text-shadow: none !important;
+}
+/* Buy box title ("Buy Hades"): the heavy display title. Its box already carries a full-width
+   rule on top, so no second, inset rule under it. Steam's 21px stays. */
+.game_area_purchase_game h2.title {
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-size: 21px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.03em !important;
+  text-transform: uppercase !important;
+  border-bottom: 0 !important;
+}
+.game_area_purchase_game h2.title :is(.bundle_label, .bundle_label_tooltip) { color: var(--gs-mute) !important; }
+
+/* Store home tabs (Popular New Releases, Top Sellers …): small-caps labels, muted until
+   hovered or active. The active tab's underline is the prism, fitted to the label like the
+   client nav tabs; Steam's 3px blue border stays as a transparent spacer so nothing moves. */
+.home_tab_button { opacity: 1 !important; }
+.home_tab_button .tab_content {
+  color: var(--gs-mute) !important;
+  font-family: var(--gs-font) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  padding-bottom: 8px !important;
+  transition: color 0.25s var(--gs-ease);
+}
+.home_tab_button:hover .tab_content,
+.home_tab_button.active .tab_content { color: var(--gs-fg) !important; }
+.home_tab_button.active { border-bottom-color: transparent !important; }
+.home_tab_button.active .tab_content { background: var(--gs-prism) left bottom / 100% 3px no-repeat !important; }
+.home_tab_bg_ctn { background-image: none !important; }
 .apphub_AppName,
 .pageheader,
 .persona_name .actual_persona_name {
@@ -96,63 +204,120 @@ a { transition: color 0.25s var(--gs-ease); }
 }
 
 /* ================= Buttons: pills ================= */
-.btn_green_steamui,
-.btn_blue_steamui,
-.btn_grey_steamui,
-.btnv6_green_white_innerfade,
-.btnv6_blue_hoverfade,
-.btnv6_blue_blue_innerfade,
-.btnv6_lightblue_blue,
-.btnv6_white_transparent {
-  background: transparent !important;
-  border: 1px solid var(--gs-fg) !important;
+/* Secondary pills match the client's DialogButton: soft fill, no outline, solid ink on hover.
+   Steam colours each button family with `color: … !important` and its hover rules
+   (.x:not(.btn_disabled):not(:disabled):not(.btn_active):not(.active):hover) outrank ours,
+   so the anchor's own colour can't be trusted. The label lives in the inner <span>, whose
+   colour Steam never sets !important, so the span gets an explicit colour in every state.
+   Steam's hairline outline (and the innerfade gradients) are on the span, so those go clear;
+   the 1px border stays, so nothing changes size.
+   Store families first, then the community ones (…_white_innerfade, btn_grey_black, btn_black,
+   and the profile header's btn_profile_action). A toggled-on button (.btn_active) is a
+   selection, so it takes the solid ink fill; Steam forces darkblue's to white !important. */
+:is(.btn_green_steamui, .btnv6_green_white_innerfade, .btn_green_white_innerfade,
+    .btn_blue_steamui, .btn_grey_steamui, .btnv6_blue_hoverfade, .btnv6_blue_blue_innerfade,
+    .btnv6_lightblue_blue, .btnv6_white_transparent, .btnv6_grey_black,
+    .btn_blue_white_innerfade, .btn_darkblue_white_innerfade, .btn_grey_white_innerfade,
+    .btn_grey_black, .btn_black, .btn_profile_action) {
+  background: var(--gs-soft) !important;
+  border: 1px solid transparent !important;
   border-radius: var(--gs-pill) !important;
   box-shadow: none !important;
   color: var(--gs-fg) !important;
   text-shadow: none !important;
   transition: background 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
 }
-:is(.btn_green_steamui, .btn_blue_steamui, .btn_grey_steamui, .btnv6_green_white_innerfade, .btnv6_blue_hoverfade,
-    .btnv6_blue_blue_innerfade, .btnv6_lightblue_blue, .btnv6_white_transparent) > span {
+:is(.btn_green_steamui, .btnv6_green_white_innerfade, .btn_green_white_innerfade,
+    .btn_blue_steamui, .btn_grey_steamui, .btnv6_blue_hoverfade, .btnv6_blue_blue_innerfade,
+    .btnv6_lightblue_blue, .btnv6_white_transparent, .btnv6_grey_black,
+    .btn_blue_white_innerfade, .btn_darkblue_white_innerfade, .btn_grey_white_innerfade,
+    .btn_grey_black, .btn_black, .btn_profile_action) > span {
   background: transparent !important;
+  border-color: transparent !important;
   border-radius: var(--gs-pill) !important;
-  color: inherit !important;
+  box-shadow: none !important;
+  color: var(--gs-fg) !important;
   font-family: var(--gs-font) !important;
   font-weight: 600 !important;
   text-shadow: none !important;
+  transition: color 0.25s var(--gs-ease) !important;
 }
 :is(.btn_blue_steamui, .btn_grey_steamui, .btnv6_blue_hoverfade, .btnv6_blue_blue_innerfade,
-    .btnv6_lightblue_blue, .btnv6_white_transparent):hover {
+    .btnv6_lightblue_blue, .btnv6_white_transparent, .btnv6_grey_black,
+    .btn_blue_white_innerfade, .btn_darkblue_white_innerfade, .btn_grey_white_innerfade,
+    .btn_grey_black, .btn_black, .btn_profile_action):is(.btn_active, .active):not(.btn_disabled) {
   background: var(--gs-fg) !important;
   color: var(--gs-bg) !important;
 }
+:is(.btn_blue_steamui, .btn_grey_steamui, .btnv6_blue_hoverfade, .btnv6_blue_blue_innerfade,
+    .btnv6_lightblue_blue, .btnv6_white_transparent, .btnv6_grey_black,
+    .btn_blue_white_innerfade, .btn_darkblue_white_innerfade, .btn_grey_white_innerfade,
+    .btn_grey_black, .btn_black, .btn_profile_action):is(.btn_active, .active):not(.btn_disabled) > span { color: var(--gs-bg) !important; }
+:is(.btn_blue_steamui, .btn_grey_steamui, .btnv6_blue_hoverfade, .btnv6_blue_blue_innerfade,
+    .btnv6_lightblue_blue, .btnv6_white_transparent, .btnv6_grey_black,
+    .btn_blue_white_innerfade, .btn_darkblue_white_innerfade, .btn_grey_white_innerfade,
+    .btn_grey_black, .btn_black, .btn_profile_action):is(.btn_active, .active):not(.btn_disabled) > span :is(img, i) { filter: var(--gs-glyph-on-fill); }
+:is(.btn_blue_steamui, .btn_grey_steamui, .btnv6_blue_hoverfade, .btnv6_blue_blue_innerfade,
+    .btnv6_lightblue_blue, .btnv6_white_transparent, .btnv6_grey_black,
+    .btn_blue_white_innerfade, .btn_darkblue_white_innerfade, .btn_grey_white_innerfade,
+    .btn_grey_black, .btn_black, .btn_profile_action):not(.btn_disabled):hover {
+  background: var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+}
+:is(.btn_blue_steamui, .btn_grey_steamui, .btnv6_blue_hoverfade, .btnv6_blue_blue_innerfade,
+    .btnv6_lightblue_blue, .btnv6_white_transparent, .btnv6_grey_black,
+    .btn_blue_white_innerfade, .btn_darkblue_white_innerfade, .btn_grey_white_innerfade,
+    .btn_grey_black, .btn_black, .btn_profile_action):not(.btn_disabled):hover > span {
+  color: var(--gs-bg) !important;
+}
+/* Icon pills (Share, Report, community icon buttons) carry Steam's white glyph as an <img> or
+   sprite <i>, which vanishes on the light hover fill in Ink and on the soft fill in Paper. */
+:is(.btn_blue_steamui, .btn_grey_steamui, .btnv6_blue_hoverfade, .btnv6_blue_blue_innerfade,
+    .btnv6_lightblue_blue, .btnv6_white_transparent, .btnv6_grey_black,
+    .btn_blue_white_innerfade, .btn_darkblue_white_innerfade, .btn_grey_white_innerfade,
+    .btn_grey_black, .btn_black, .btn_profile_action) > span :is(img, i) {
+  filter: var(--gs-glyph);
+  transition: filter 0.25s var(--gs-ease);
+}
+:is(.btn_blue_steamui, .btn_grey_steamui, .btnv6_blue_hoverfade, .btnv6_blue_blue_innerfade,
+    .btnv6_lightblue_blue, .btnv6_white_transparent, .btnv6_grey_black,
+    .btn_blue_white_innerfade, .btn_darkblue_white_innerfade, .btn_grey_white_innerfade,
+    .btn_grey_black, .btn_black, .btn_profile_action):not(.btn_disabled):hover > span :is(img, i) {
+  filter: var(--gs-glyph-on-fill);
+}
 /* Buy / add to cart / play: the solid ink pill with the prism edge */
-.btn_green_steamui,
-.btnv6_green_white_innerfade,
+:is(.btn_green_steamui, .btnv6_green_white_innerfade, .btn_green_white_innerfade),
 .btn_addtocart .btn_green_steamui {
   background: var(--gs-prism) bottom / 100% 3px no-repeat, var(--gs-fg) !important;
   color: var(--gs-bg) !important;
 }
-:is(.btn_green_steamui, .btnv6_green_white_innerfade):hover { filter: brightness(1.08); }
+:is(.btn_green_steamui, .btnv6_green_white_innerfade, .btn_green_white_innerfade) > span { color: var(--gs-bg) !important; }
+:is(.btn_green_steamui, .btnv6_green_white_innerfade, .btn_green_white_innerfade) > span :is(img, i) { filter: var(--gs-glyph-on-fill); }
+:is(.btn_green_steamui, .btnv6_green_white_innerfade, .btn_green_white_innerfade):hover { filter: brightness(1.08); }
 
 /* ================= Capsules and lists ================= */
 .store_capsule,
 .store_main_capsule,
 .tab_item,
+.tab_row_item,
 .home_area_spotlight,
 .carousel_container .store_capsule {
   background: transparent !important;
   border-radius: 4px !important;
   box-shadow: none !important;
 }
-.tab_item {
+/* Store home tab lists: .tab_item is the older markup, .tab_row_item the current one
+   (Steam also marks the row it previews with .focus). Both get the ink wipe. */
+.tab_item,
+.tab_row_item {
   position: relative;
   isolation: isolate;
   overflow: hidden;
   border-bottom: 1px solid var(--gs-line) !important;
   border-radius: 0 !important;
 }
-.tab_item::before {
+.tab_item::before,
+.tab_row_item::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -160,12 +325,16 @@ a { transition: color 0.25s var(--gs-ease); }
   background: var(--gs-fg);
   transform: scaleY(0);
   transform-origin: bottom;
-  transition: transform 0.5s var(--gs-ease);
+  transition: transform var(--gs-wipe-dur) var(--gs-wipe-ease) var(--gs-wipe-hold);
 }
-.tab_item:hover::before { transform: scaleY(1); }
-.tab_item:hover,
-.tab_item:hover * { color: var(--gs-bg) !important; }
+:is(.tab_item:hover, .tab_row_item:is(:hover, .focus))::before { transform: scaleY(1); transition-delay: 0s; }
+:is(.tab_item, .tab_row_item) * { transition: color 0s linear var(--gs-wipe-out) !important; }
+:is(.tab_item:hover, .tab_row_item:is(:hover, .focus)) * { transition-delay: var(--gs-wipe-cross) !important; }
+:is(.tab_item:hover, .tab_row_item:is(:hover, .focus)),
+:is(.tab_item:hover, .tab_row_item:is(:hover, .focus)) * { color: var(--gs-bg) !important; }
 .tab_item_name { color: var(--gs-fg) !important; font-weight: 600 !important; }
+.tab_row_item .tab_item_title { color: var(--gs-fg); font-weight: 600 !important; }
+.tab_row_item :is(.tab_item_tags, .tab_item_release_date) { color: var(--gs-mute); }
 
 /* Search results: the dashboard's ruled list with the ink wipe */
 #search_resultsRows { border-top: 1.5px solid var(--gs-fg); }
@@ -184,14 +353,74 @@ a { transition: color 0.25s var(--gs-ease); }
   background: var(--gs-fg);
   transform: scaleY(0);
   transform-origin: bottom;
-  transition: transform 0.5s var(--gs-ease);
+  transition: transform var(--gs-wipe-dur) var(--gs-wipe-ease) var(--gs-wipe-hold);
 }
-.search_result_row:hover::before { transform: scaleY(1); }
+.search_result_row:hover::before { transform: scaleY(1); transition-delay: 0s; }
+.search_result_row * { transition: color 0s linear var(--gs-wipe-out) !important; }
+.search_result_row:hover * { transition-delay: var(--gs-wipe-cross) !important; }
+/* the title's own colour comes first so the hover ink (same specificity) can override it */
+.search_name .title { color: var(--gs-fg) !important; font-weight: 600 !important; }
 .search_result_row:hover,
 .search_result_row:hover * { color: var(--gs-bg) !important; }
-.search_name .title { color: var(--gs-fg) !important; font-weight: 600 !important; }
 .search_released,
 .search_reviewscore { color: var(--gs-mute) !important; font-variant-numeric: tabular-nums; }
+
+/* Search bar, result count and the filter sidebar: Steam's blues become ink and paper. */
+.searchbar { background: transparent !important; }
+.searchbar .label,
+.search_pagination_left { color: var(--gs-mute) !important; }
+#term,
+.search_filter_suggest {
+  background: transparent !important;
+  border-color: transparent transparent var(--gs-fg) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: var(--gs-fg) !important;
+}
+:is(#term, .search_filter_suggest)::placeholder { color: var(--gs-mute) !important; }
+#sort_by_trigger { background: var(--gs-soft) !important; color: var(--gs-fg) !important; }
+#sort_by_trigger:hover { background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+.rightcol .block .block_header {
+  background: transparent !important;
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+.block_rule { background: var(--gs-line) !important; }
+.tab_filter_control,
+.range_display { color: var(--gs-fg) !important; font-family: var(--gs-font) !important; }
+.tab_filter_control_count { color: var(--gs-mute) !important; }
+:is(.tab_filter_control, .tab_filter_control_row:not(.disabled)):hover {
+  background: var(--gs-soft) !important;
+  color: var(--gs-fg) !important;
+}
+/* A ticked filter is a selection: solid ink, like the hovered pills. */
+:is(.tab_filter_control.checked, .tab_filter_control_row:not(.disabled).checked) {
+  background: var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+}
+.tab_filter_control_row:not(.disabled).checked :is(.tab_filter_control, .tab_filter_control_count),
+.tab_filter_control.checked .tab_filter_control_count { color: var(--gs-bg) !important; }
+.tab_filter_control_row .tab_filter_control { background: transparent !important; }
+/* Steam's blue sprite checkbox, redrawn in the text colour: a ring, filled in when ticked. */
+.tab_filter_control_checkbox {
+  background: none !important;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+:is(.tab_filter_control.checked, .tab_filter_control_row.checked .tab_filter_control_include) .tab_filter_control_checkbox {
+  background: linear-gradient(currentColor, currentColor) center / 8px 8px no-repeat !important;
+}
+.tab_filter_control_not img { filter: var(--gs-glyph); }
+.tab_filter_control_row.checked .tab_filter_control_not img { filter: var(--gs-glyph-on-fill); }
+.range_input::-webkit-slider-runnable-track { background: var(--gs-fg) !important; box-shadow: none !important; }
+.range_input:focus::-webkit-slider-runnable-track { background: var(--gs-fg) !important; }
+.range_input::-webkit-slider-thumb {
+  background: var(--gs-fg) !important;
+  box-shadow: 0 0 0 3px var(--gs-bg) !important;
+}
 
 /* ================= Prices ================= */
 .discount_block,
@@ -200,14 +429,21 @@ a { transition: color 0.25s var(--gs-ease); }
   background: transparent !important;
   border-radius: var(--gs-pill) !important;
 }
+/* The "Rainbow discounts" setting (options/deals-*.css) picks big discounts by Steam's
+   data-discount attribute and sets the --gs-deal-* properties; everything else stays ink. */
 .discount_pct {
-  background: var(--gs-fg) !important;
-  color: var(--gs-bg) !important;
+  background: var(--gs-deal-bg, var(--gs-fg)) !important;
+  background-size: 200% 100% !important;
+  color: var(--gs-deal-fg, var(--gs-bg)) !important;
   border-radius: var(--gs-pill) !important;
   font-family: var(--gs-font) !important;
   font-weight: 900 !important;
   font-variant-numeric: tabular-nums;
+  animation: var(--gs-deal-anim, none);
 }
+/* One full period per loop, so the drift never jumps. */
+@keyframes gs-shimmer { to { background-position: 200% 0; } }
+@media (prefers-reduced-motion: reduce) { .discount_pct { animation: none !important; } }
 .discount_original_price { color: var(--gs-mute) !important; font-variant-numeric: tabular-nums; }
 .discount_final_price,
 .game_purchase_price {
@@ -220,6 +456,10 @@ a { transition: color 0.25s var(--gs-ease); }
 .game_review_summary.positive { color: var(--gs-ok) !important; }
 .game_review_summary.mixed { color: var(--gs-warn) !important; }
 .game_review_summary.negative { color: var(--gs-err) !important; }
+
+/* ================= Carousels ================= */
+/* Steam's white arrow art: kept on Ink, turned to ink on Paper (where it nearly vanished). */
+.carousel_container .arrow > div { filter: var(--gs-glyph); }
 
 /* ================= Game page ================= */
 .game_background_glow { background: none !important; }
@@ -244,13 +484,34 @@ a { transition: color 0.25s var(--gs-ease); }
 }
 .rightcol .block { border-top: 1px solid var(--gs-line) !important; }
 .app_tag {
-  background: transparent !important;
-  border: 1px solid var(--gs-line) !important;
+  background: var(--gs-soft) !important;
+  border: 1px solid transparent !important;
   border-radius: var(--gs-pill) !important;
   color: var(--gs-fg) !important;
   box-shadow: none !important;
 }
-.app_tag:hover { border-color: var(--gs-fg) !important; }
+.app_tag:hover { background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+/* "Browse all (1)" beside section headings: Steam draws it as a hairline outline box with
+   white text, and its "(1)" stays white even when the pill turns ink. */
+h2 span.note {
+  background: var(--gs-soft) !important;
+  border-color: transparent !important;
+  border-radius: var(--gs-pill) !important;
+  transition: background 0.25s var(--gs-ease);
+}
+/* Colour the link itself: inheriting it from the span would chain two colour transitions. */
+h2 span.note,
+h2 span.note a { color: var(--gs-fg) !important; }
+h2 span.note:hover { background: var(--gs-fg) !important; }
+h2 span.note:hover,
+h2 span.note:hover a { color: var(--gs-bg) !important; }
+h2 span.note em { color: inherit !important; }
+/* Search pagination arrows: Steam's #fff on light blue hover. */
+.pagebtn:not(.disabled) { background: var(--gs-soft) !important; color: var(--gs-fg) !important; }
+.pagebtn:not(.disabled):hover { background: var(--gs-fg) !important; color: var(--gs-bg) !important; }
+/* Page numbers: Steam's #3b6e8c sits at 3.4:1 on the ink sheet. */
+.search_pagination_right a:not(.pagebtn) { color: var(--gs-mute) !important; }
+.search_pagination_right a:not(.pagebtn):hover { color: var(--gs-fg) !important; }
 
 /* ================= Menus and modals ================= */
 .popup_menu,

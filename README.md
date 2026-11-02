@@ -21,12 +21,13 @@ Steam Glass is a [Millennium](https://steambrew.app) theme for the Steam desktop
 ## ✨ Key Features
 
 - 🖋️ **Ink and Paper** — a dark sheet and a light one, switched from the theme's settings.
-- 🧾 **Ink row wipe** — library games, friends, settings pages and store rows fill with ink from the bottom on hover, and the text turns paper.
+- 🧾 **Ink row wipe** — library games, settings pages and store rows fill with ink from the bottom on hover, and the text turns paper.
 - 🔠 **Heavy uppercase type** — STORE / LIBRARY / COMMUNITY, game titles and play buttons in Inter Tight 900; labels are small letter-spaced caps.
-- 💊 **Pill controls** — buttons, tabs, dropdowns, filters and the Play button are hairline pills that fill with ink when you use them.
+- 💊 **Pill controls** — buttons, tabs, dropdowns, filters and the Play button are soft pills that fill with ink when you use them.
 - 🌈 **One prism accent** — the open tab, the Play button edge and progress bars get a thin rainbow; switch it off for pure monochrome.
 - 📏 **Ruled stats** — last played, play time and achievements sit in a ruled row with big numbers, like the dashboard's fact row.
 - 🛒 **Store and community too** — buttons, prices, discounts, search results, tags and menus follow the same rules.
+- 🏷️ **Rainbow deals** — store discount badges at or above your chosen level (75% by default) get the prism fill with a slow shimmer.
 - 🧱 **Built to last through updates** — styled on the readable class names Millennium adds, not the hashed names that change with each Steam build.
 
 ## 📸 Screenshots
@@ -77,6 +78,7 @@ The folder needs `skin.json` directly inside it, not one level deeper.
 3. Open the theme's settings (the gear next to it) and go to the **Style** tab.
 4. Set **Mode** to **Ink** or **Paper**. Steam reloads its UI when you change it.
 5. Turn **Prism accent** off if you want pure black and white.
+6. Pick when store discounts go rainbow under **Rainbow discounts**: Off, 50%+, 75%+ or 90%+.
 
 ---
 
@@ -96,6 +98,7 @@ Millennium matches each Steam window and loads the matching stylesheet:
 | `shared/tokens.css` | Fonts, the prism, easing and fallback colours |
 | `modes/ink.css`, `modes/paper.css` | The two colour sets, loaded by the **Mode** setting |
 | `options/no-prism.css` | Loaded when **Prism accent** is off |
+| `options/deals-50.css`, `deals-75.css`, `deals-90.css` | Pick discount badges by Steam's `data-discount` value for the **Rainbow discounts** setting |
 
 Big Picture mode is left as Steam draws it.
 </details>

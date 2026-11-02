@@ -1,0 +1,32 @@
+/* Rainbow discounts: 75% and up. Steam puts the percentage in data-discount;
+   webkit.css draws the badge from these properties. */
+.discount_block[data-discount="75"],
+.discount_block[data-discount="76"],
+.discount_block[data-discount="77"],
+.discount_block[data-discount="78"],
+.discount_block[data-discount="79"],
+.discount_block[data-discount="80"],
+.discount_block[data-discount="81"],
+.discount_block[data-discount="82"],
+.discount_block[data-discount="83"],
+.discount_block[data-discount="84"],
+.discount_block[data-discount="85"],
+.discount_block[data-discount="86"],
+.discount_block[data-discount="87"],
+.discount_block[data-discount="88"],
+.discount_block[data-discount="89"],
+.discount_block[data-discount="90"],
+.discount_block[data-discount="91"],
+.discount_block[data-discount="92"],
+.discount_block[data-discount="93"],
+.discount_block[data-discount="94"],
+.discount_block[data-discount="95"],
+.discount_block[data-discount="96"],
+.discount_block[data-discount="97"],
+.discount_block[data-discount="98"],
+.discount_block[data-discount="99"],
+.discount_block[data-discount="100"] {
+  --gs-deal-bg: var(--gs-prism-loop);
+  --gs-deal-fg: var(--gs-prism-ink);
+  --gs-deal-anim: gs-shimmer 6s linear infinite;
+}

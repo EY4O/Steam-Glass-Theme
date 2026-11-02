@@ -46,35 +46,19 @@ body,
 }
 .friendsListSectionTitle { background: var(--gs-bg) !important; border-top: 1px solid var(--gs-line) !important; }
 
-/* Rows: the same ink wipe as the library */
+/* Rows: a quiet tint on hover, no wipe */
 .friend {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   background: transparent !important;
   border-radius: 0 !important;
 }
-.friend::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--gs-fg);
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform 0.45s var(--gs-ease);
-}
-.friend:hover::before { transform: scaleY(1); }
-.friend .playerName { font-weight: 600 !important; transition: color 0.3s var(--gs-ease) !important; }
-.friend .richPresenceLabel { color: var(--gs-mute) !important; transition: color 0.3s var(--gs-ease) !important; }
+.friend:hover { background: var(--gs-soft) !important; }
+.friend .playerName { font-weight: 600 !important; }
+.friend .richPresenceLabel { color: var(--gs-mute) !important; }
 .friend.online .playerName { color: var(--gs-fg) !important; }
 .friend.ingame .playerName { color: var(--gs-ok) !important; }
 .friend.ingame .richPresenceLabel { color: var(--gs-ok) !important; opacity: 0.8; }
 .friend.offline .playerName { color: var(--gs-mute) !important; }
 .friend.awayOrSnooze .playerName { color: var(--gs-mute) !important; }
-.friend:hover .playerName,
-.friend:hover .richPresenceLabel,
-.friend:hover * { color: var(--gs-bg) !important; }
 
 /* Status: one legend, round dots and a thin stripe under the avatar */
 .avatarStatus { border-radius: 0 !important; }

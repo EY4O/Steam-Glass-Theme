@@ -12,6 +12,10 @@
   --gs-info: #1f5fbf;
   --gs-ok: #1d7a46;
   --gs-glass: rgba(233, 233, 231, 0.88);
+  --gs-soft: rgba(17, 17, 17, 0.06);
+  /* Steam's light icon glyphs: forced dark on the sheet, white on an ink (--gs-fg) fill. */
+  --gs-glyph: brightness(0);
+  --gs-glyph-on-fill: brightness(0) invert(1);
   color-scheme: light;
 }
 

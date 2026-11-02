@@ -1,6 +1,6 @@
 {
   "name": "Steam Glass",
-  "author": "sanscura",
+  "author": "Looneth",
   "description": "Ink on paper. A Swiss-editorial Steam theme from Glass Dashboard: heavy uppercase type, hairline rules, pill controls and a prism accent, in Paper and Ink.",
   "version": "1.0.0",
   "tags": ["Minimal", "Light", "Dark", "Editorial", "Monochrome"],
@@ -34,6 +34,17 @@
       "values": {
         "yes": {},
         "no": { "TargetCss": { "affects": [".*"], "src": "options/no-prism.css" } }
+      }
+    },
+    "Rainbow discounts": {
+      "description": "Store discount badges at or above this level get the prism fill with a slow shimmer.",
+      "default": "75%+",
+      "tab": "Style",
+      "values": {
+        "Off": {},
+        "50%+": { "TargetCss": { "affects": [".*"], "src": "options/deals-50.css" } },
+        "75%+": { "TargetCss": { "affects": [".*"], "src": "options/deals-75.css" } },
+        "90%+": { "TargetCss": { "affects": [".*"], "src": "options/deals-90.css" } }
       }
     }
   }

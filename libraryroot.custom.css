@@ -41,7 +41,8 @@ body.DesktopUI {
 .TitleBar {
   background: var(--gs-bg) !important;
 }
-.TitleBar { border-bottom: 1px solid var(--gs-line) !important; }
+/* The menu bar and the nav tabs read as one strip, so no rule between them. */
+.TopBar .TitleBar { border-bottom: 0 !important; box-shadow: none !important; }
 .RootMenuButton > div {
   color: var(--gs-mute) !important;
   font-family: var(--gs-font) !important;
@@ -68,31 +69,47 @@ body.DesktopUI {
 }
 
 /* ================= STORE / LIBRARY / COMMUNITY ================= */
-/* Heavy uppercase labels, a hairline pill on hover, the prism under the open one. */
+/* Heavy uppercase labels that brighten on hover, the prism under the open one.
+   Steam renders the label as a block inside a fixed-width tab, so it is shrunk to its text
+   (fit-content, no flex growth) and the theme owns the padding: the prism then sits exactly
+   under the word. */
 .SuperNavBar {
   background: var(--gs-bg) !important;
   border-bottom: 1px solid var(--gs-line) !important;
 }
 .SuperNavMenu .MenuButton {
   position: relative;
-  border: 1px solid transparent !important;
-  border-radius: var(--gs-pill) !important;
+  width: fit-content !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  flex: 0 0 auto !important;
+  padding: 0 var(--gs-tab-pad) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
   color: var(--gs-mute) !important;
   font-family: var(--gs-font) !important;
   font-weight: 900 !important;
   letter-spacing: -0.01em !important;
   text-transform: uppercase !important;
-  transition: color 0.25s var(--gs-ease), border-color 0.25s var(--gs-ease) !important;
+  transition: color 0.25s var(--gs-ease) !important;
 }
-.SuperNavMenu:hover .MenuButton { color: var(--gs-fg) !important; border-color: var(--gs-line) !important; }
-.SuperNavMenu.Selected .MenuButton { color: var(--gs-fg) !important; border-bottom: 1px solid transparent !important; }
+.SuperNavMenu { --gs-tab-pad: 14px; }
+.SuperNavMenu:hover .MenuButton,
+.SuperNavMenu.Selected .MenuButton { color: var(--gs-fg) !important; }
+.SuperNavMenu .MenuButton::before { display: none !important; }
+/* Steam draws its own underline here with width: 100%, which would beat our right inset. */
 .SuperNavMenu.Selected .MenuButton::after {
   content: "" !important;
   position: absolute !important;
-  left: 14px !important; right: 14px !important; bottom: -1px !important;
+  left: var(--gs-tab-pad) !important; right: var(--gs-tab-pad) !important; bottom: -1px !important;
+  width: auto !important;
   height: 3px !important;
   background: var(--gs-prism) !important;
   border: 0 !important;
+  border-radius: 0 !important;
   display: block !important;
 }
 .SuperNav .Arrow { color: var(--gs-mute) !important; transition: color 0.25s var(--gs-ease) !important; }
@@ -141,14 +158,21 @@ body.DesktopUI {
 .GameListHomeAndSearch .SearchInput input:focus { border-bottom-width: 2px !important; }
 .AdvancedSearchButton,
 .CollectionsButton {
-  border: 1px solid var(--gs-line) !important;
+  border: 0 !important;
   border-radius: var(--gs-pill) !important;
-  background: transparent !important;
+  background: var(--gs-soft) !important;
   color: var(--gs-mute) !important;
-  transition: border-color 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
+  transition: background 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
 }
 .AdvancedSearchButton:hover,
-.CollectionsButton:hover { border-color: var(--gs-fg) !important; color: var(--gs-fg) !important; }
+.CollectionsButton:hover { background: var(--gs-line) !important; color: var(--gs-fg) !important; }
+/* Steam paints the filter button's hover and open state on the square container around it;
+   move both onto the round button. */
+.AdvancedSearchContainer { background: transparent !important; }
+.AdvancedSearchContainer:is(:hover, .Extended):not(.Disabled) .AdvancedSearchButton {
+  background: var(--gs-line) !important;
+  color: var(--gs-fg) !important;
+}
 
 /* Filter bar and section headers: small letter-spaced labels */
 .ViewFiltersBar { background: transparent !important; border-top: 1px solid var(--gs-line) !important; }
@@ -187,20 +211,29 @@ body.DesktopUI {
   background: var(--gs-fg);
   transform: scaleY(0);
   transform-origin: bottom;
-  transition: transform 0.45s var(--gs-ease);
+  transition: transform var(--gs-wipe-dur) var(--gs-wipe-ease) var(--gs-wipe-hold);
 }
-.ReactVirtualized__List .Container:has(> .GameListEntryContainer):is(:hover, .Selected)::before { transform: scaleY(1); }
+.ReactVirtualized__List .Container:has(> .GameListEntryContainer):hover::before { transform: scaleY(1); transition-delay: 0s; }
+/* Selection is a state, not a gesture: the ink is simply there, no wipe to watch. */
+.ReactVirtualized__List .Container.Selected:has(> .GameListEntryContainer)::before { transform: scaleY(1); transition: none; }
 .ReactVirtualized__List .Container:has(> .GameListEntryContainer) .HoverOverlay { display: none !important; }
 .GameListEntryContainer .GameListEntryName {
   font-family: var(--gs-font) !important;
   font-weight: 600 !important;
-  transition: color 0.3s var(--gs-ease) !important;
 }
 .GameListEntryContainer .GameListEntryLabels,
 .GameListEntryContainer .DownloadProgress {
   color: var(--gs-mute) !important;
   font-variant-numeric: tabular-nums;
-  transition: color 0.3s var(--gs-ease) !important;
+}
+.GameListEntryContainer :is(.GameListEntryName, .GameListEntryLabels, .DownloadProgress) {
+  transition: color 0s linear var(--gs-wipe-out) !important;
+}
+.ReactVirtualized__List .Container:hover:has(> .GameListEntryContainer) :is(.GameListEntryName, .GameListEntryLabels, .DownloadProgress) {
+  transition-delay: var(--gs-wipe-cross) !important;
+}
+.ReactVirtualized__List .Container.Selected:has(> .GameListEntryContainer) :is(.GameListEntryName, .GameListEntryLabels, .DownloadProgress) {
+  transition: none !important;
 }
 .ReactVirtualized__List .Container.Uninstalled:has(> .GameListEntryContainer) { color: var(--gs-mute) !important; }
 .ReactVirtualized__List .Container.Uninstalled:has(> .GameListEntryContainer) .GameIcon { opacity: 0.5; }
@@ -318,6 +351,10 @@ body.DesktopUI {
   border: 1px solid var(--gs-fg) !important;
   transition: filter 0.25s var(--gs-ease) !important;
 }
+/* Press: the whole pill, chevron included, gives a little under the click.
+   :active also matches the container when either half is pressed. */
+.PlayButtonContainer { transition: transform var(--gs-press-dur) var(--gs-ease-out) !important; }
+.PlayButtonContainer:not(.Disabled):active { transform: scale(var(--gs-press-play)) !important; }
 .PlayButtonContainer:not(.Green) .PlayButton {
   background: transparent !important;
   color: var(--gs-fg) !important;
@@ -371,15 +408,16 @@ body.DesktopUI {
   border-left-color: var(--gs-line) !important;
 }
 
-/* Gear, info, favourite: round hairline buttons */
-.AppButtonsContainer > * {
-  border: 1px solid var(--gs-line) !important;
+/* Gear, info, favourite: round soft buttons. The gear sits inside a wrapper,
+   so the buttons are matched by Steam's MenuButton class, not as direct children. */
+.AppButtonsContainer .MenuButton {
+  border: 0 !important;
   border-radius: var(--gs-pill) !important;
-  background: transparent !important;
+  background: var(--gs-soft) !important;
   color: var(--gs-mute) !important;
-  transition: border-color 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
+  transition: background 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
 }
-.AppButtonsContainer > *:hover { border-color: var(--gs-fg) !important; color: var(--gs-fg) !important; }
+.AppButtonsContainer .MenuButton:is(:hover, .MenuActive) { background: var(--gs-line) !important; color: var(--gs-fg) !important; }
 
 /* Tab strip (Store page / DLC / Community Hub ...) */
 .LinksSection { background: transparent !important; border-bottom: 1px solid var(--gs-line) !important; }
@@ -445,9 +483,9 @@ body.DesktopUI {
 }
 .AddGameButton,
 .FriendsButton {
-  border: 1px solid var(--gs-fg) !important;
+  border: 1px solid transparent !important;
   border-radius: var(--gs-pill) !important;
-  background: transparent !important;
+  background: var(--gs-soft) !important;
   color: var(--gs-fg) !important;
   font-weight: 600 !important;
   transition: background 0.25s var(--gs-ease), color 0.25s var(--gs-ease) !important;
