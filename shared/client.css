@@ -184,6 +184,26 @@ html .MenuPopup .MenuItem:hover {
 html .contextMenuItem.Destructive { color: var(--gs-err) !important; }
 html .contextMenuItem.Destructive:is(.active, :hover) { background: var(--gs-err) !important; color: var(--gs-bg) !important; }
 html .ContextMenuSeparator { background: var(--gs-line) !important; height: 1px !important; }
+/* Library dropdown menus (the shelf picker on Home, Sort by in collections). They open as
+   context menus, but Steam paints an inner box slate with !important behind doubled classes,
+   so these selectors carry extra weight. The inner box takes the menu colour. */
+html body .DialogMenuPosition.CollectionDropDownContainer.CollectionDropDownContainer ._DialogInputContainer,
+html body .DialogMenuPosition.SortingDropDownContainer > div {
+  background: var(--gs-raise) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--gs-fg) !important;
+}
+html body :is(.DialogMenuPosition.CollectionDropDownContainer .DropDownItems, .DialogMenuPosition.SortingDropDownContainer .SortingDropDownItems) {
+  background: transparent !important;
+  color: var(--gs-fg) !important;
+  font-family: var(--gs-font) !important;
+  font-weight: 500 !important;
+}
+html body :is(.DialogMenuPosition.CollectionDropDownContainer .DropDownItems, .DialogMenuPosition.SortingDropDownContainer .SortingDropDownItems):is(:hover, :focus, .gpfocus) {
+  background: var(--gs-fg) !important;
+  color: var(--gs-bg) !important;
+}
 
 /* ================= Modals and dialogs ================= */
 html .ModalOverlayBackground { background: rgba(0, 0, 0, 0.5) !important; }
