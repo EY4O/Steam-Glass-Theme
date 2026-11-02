@@ -295,6 +295,46 @@ a { transition: color 0.25s var(--gs-ease); }
 :is(.btn_green_steamui, .btnv6_green_white_innerfade, .btn_green_white_innerfade) > span :is(img, i) { filter: var(--gs-glyph-on-fill); }
 :is(.btn_green_steamui, .btnv6_green_white_innerfade, .btn_green_white_innerfade):hover { filter: brightness(1.08); }
 
+/* Ignore (and View wishlist): Steam splits these into a label pill and a menu arrow, and paints
+   the arrow blue, brighter once the game is ignored. Join the two into one soft pill. */
+:is(#view_wishlist_btn, .queue_btn_ignore > .btnv6_blue_hoverfade) {
+  border-start-end-radius: 0 !important;
+  border-end-end-radius: 0 !important;
+}
+.queue_btn_menu > .queue_menu_arrow,
+.queue_btn_menu > .queue_menu_arrow.queue_btn_active {
+  background: var(--gs-soft) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  border-start-end-radius: var(--gs-pill) !important;
+  border-end-end-radius: var(--gs-pill) !important;
+  padding-inline: 4px 6px !important;
+  color: var(--gs-fg) !important;
+  transition: background 0.25s var(--gs-ease) !important;
+}
+.queue_btn_menu:hover > .queue_menu_arrow,
+.queue_btn_menu > .queue_menu_arrow:hover { background: var(--gs-line) !important; }
+.queue_btn_menu > .queue_menu_arrow * { background: transparent !important; }
+.queue_btn_menu > .queue_menu_arrow img { filter: var(--gs-glyph); }
+.queue_btn_menu > .queue_menu_arrow svg { fill: currentColor !important; }
+/* Its flyout: the theme's menu surface instead of Steam's blue-grey glow */
+.queue_btn_menu:hover .queue_menu_flyout,
+.queue_menu_flyout:hover,
+.queue_menu_flyout.force_expand,
+[aria-expanded=true] ~ .queue_menu_flyout {
+  background: var(--gs-raise) !important;
+  border: 1px solid var(--gs-line) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45) !important;
+  overflow: hidden;
+}
+.queue_menu_option { color: var(--gs-fg) !important; }
+.queue_menu_option:hover { background: var(--gs-soft) !important; }
+.queue_menu_option_label > .option_title { color: var(--gs-fg) !important; font-family: var(--gs-font) !important; font-weight: 600 !important; }
+.queue_menu_option_label > .option_subtitle,
+.queue_menu_option:hover .queue_menu_option_label > .option_subtitle { color: var(--gs-mute) !important; }
+.queue_menu_option img { filter: var(--gs-glyph); }
+
 /* ================= Capsules and lists ================= */
 .store_capsule,
 .store_main_capsule,
