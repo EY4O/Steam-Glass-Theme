@@ -232,6 +232,10 @@ html .DialogFooter { border-top: 1px solid var(--gs-line) !important; }
 html .PagedSettingsDialog_PageListColumn {
   background: var(--gs-rail) !important;
   border-right: 1px solid var(--gs-line) !important;
+  /* The page beside it is a DialogContent, whose card shadow fell ~70px across the list and
+     greyed the right of the ink rows. Above the page, the list hides that shadow. */
+  position: relative;
+  z-index: 1;
 }
 html .PagedSettingDialog_ContentColumn { background: var(--gs-bg) !important; }
 html .PagedSettingsDialog_PageListItem {
