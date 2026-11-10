@@ -529,18 +529,23 @@ body.DesktopUI {
 .AchievementProgressBar,
 .DetailsProgressBar,
 .DownloadProgressBar,
-.ProgressBarWrapper {
+.ProgressBarWrapper .ProgressBar {
   background: var(--gs-line) !important;
   border-radius: 2px !important;
   overflow: hidden;
 }
 .AchievementProgressBar > div,
 .AchievementProgress .ProgressBar > div,
-.ProgressBarWrapper .ProgressBar,
 .DetailsProgressBar > div,
 .DownloadProgressBar > div {
   background: var(--gs-prism) !important;
   background-size: 100% 100% !important;
+}
+/* Bottom bar download: Steam draws the fill as ::after, var(--percent) wide */
+.ProgressBarWrapper .ProgressBar::after {
+  background: var(--gs-prism) !important;
+  background-size: 100% 100% !important;
+  animation: none !important;
 }
 
 /* ================= Bottom bar ================= */
